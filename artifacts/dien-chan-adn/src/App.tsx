@@ -57,9 +57,8 @@ function Nav() {
   return (
     <div className="nav-wrap">
       <nav className="nav" aria-label="Điều hướng chính">
-        <Link href="/" data-testid="link-logo"><Logo /></Link>
         <div className={`nav-links ${open ? 'open' : ''}`}>
-          <a data-testid="link-course" href="#lo-trinh" onClick={() => setOpen(false)}>Khóa học</a>
+          <a data-testid="link-course" href="#lo-trinh" onClick={() => setOpen(false)}>Khóa học Diện Chẩn</a>
           <a data-testid="link-news" href="#giang-vien" onClick={() => setOpen(false)}>Tin tức</a>
           <Link data-testid="link-login" href="/dang-nhap">Đăng nhập</Link>
         </div>
