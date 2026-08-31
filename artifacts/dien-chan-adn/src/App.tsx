@@ -92,7 +92,7 @@ function Hero() {
           </div>
           <div className="hero-actions">
             <button data-testid="button-hero-register" className="cta" onClick={goToPayment}>ĐĂNG KÝ HỌC NGAY <ArrowRight size={16} /></button>
-            <a data-testid="link-hero-outline" className="ghost-btn" href="#lo-trinh">Xem lộ trình <ArrowRight size={14} /></a>
+            <a data-testid="link-hero-outline" className="ghost-btn" href="#lo-trinh"><span className="ghost-btn-kicker">01</span><span>XEM LỘ TRÌNH</span></a>
           </div>
           <div className="trust-row">
             <div><strong>11+</strong> Năm Kinh Nghiệm</div>
@@ -104,7 +104,6 @@ function Hero() {
           <img className="hero-image-main" src={assets.hero} alt="Nguyễn Minh Đạt chia sẻ trong lớp học" />
           <img className="hero-image-small" src={assets.classOne} alt="Học viên thực hành Diện Chẩn" />
           <img className="hero-image-third" src={assets.classTwo} alt="Học viên học cùng giảng viên" />
-          <div className="hero-stamp">HỌC<br />TẠI NHÀ<br /><Check size={18} /></div>
         </div>
       </div>
     </section>
