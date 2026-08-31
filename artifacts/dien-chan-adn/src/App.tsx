@@ -70,8 +70,8 @@ function Nav() {
   );
 }
 
-function SectionLabel({ number, children }: { number: string; children: string }) {
-  return <div className="section-number"><span>{number}</span><span>{children}</span></div>;
+function SectionLabel(_props: { number: string; children: string }) {
+  return null;
 }
 
 function Hero() {

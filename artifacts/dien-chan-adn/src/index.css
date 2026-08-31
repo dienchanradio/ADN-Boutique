@@ -136,8 +136,6 @@ img { display: block; max-width: 100%; }
 .trust-row strong { display: block; color: #ead292; font-family: 'Fraunces', Georgia, serif; font-size: 1.4rem; }
 .split { display: grid; grid-template-columns: 1fr .9fr; gap: 5rem; align-items: center; }
 .section-head { margin-bottom: 3rem; }
-.section-number { display: inline-flex; align-items: center; gap: .6rem; color: #ead292; font-family: 'Space Mono', monospace; font-size: .74rem; letter-spacing: .16em; }
-.section-number::before { content: ''; width: 35px; height: 1px; background: #ead292; }
 .lesson-list { display: grid; gap: .7rem; }
 .lesson-item { border-bottom: 1px solid rgba(1,44,78,.16); }
 .lesson-trigger { width: 100%; display: flex; justify-content: space-between; gap: 1rem; text-align: left; cursor: pointer; padding: 1.15rem 0; background: transparent; border: 0; color: #012c4e; font-weight: 700; }
@@ -170,8 +168,7 @@ img { display: block; max-width: 100%; }
 .audience-card span { color: #cf5c78; font: .7rem 'Space Mono', monospace; }
 .audience-card p { color: #426178; line-height: 1.6; }
 .bonus { background: #ead292; color: #012c4e; }
-.bonus .section-number, .bonus .eyebrow { color: #713520; }
-.bonus .section-number::before { background: #713520; }
+.bonus .eyebrow { color: #713520; }
 .bonus-grid { display: grid; grid-template-columns: .9fr 1.4fr; gap: 5rem; align-items: center; }
 .gift-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 1rem; }
 .gift { padding: 1.3rem; border: 1px solid rgba(113,53,32,.3); background: rgba(253,251,247,.42); border-radius: 1rem; min-height: 130px; }
