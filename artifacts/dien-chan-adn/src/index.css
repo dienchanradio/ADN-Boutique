@@ -111,17 +111,13 @@ img { display: block; max-width: 100%; }
 }
 .cta:hover { transform: translateY(-3px); box-shadow: 0 16px 34px rgba(207,92,120,.3); }
 .ghost-btn {
-  display: inline-flex; align-items: center; justify-content: center; gap: .7rem;
+  display: inline-flex; align-items: center; justify-content: center;
   min-height: 50px; border: 1px solid rgba(234,210,146,.72); border-radius: 999px;
-  color: #ead292; padding: .78rem 1.15rem .78rem .8rem; font-size: .76rem; font-weight: 700;
+  color: #ead292; padding: .78rem 1.35rem; font-size: .76rem; font-weight: 700;
   letter-spacing: .07em; cursor: pointer; background: rgba(234,210,146,.08);
   text-transform: uppercase; transition: background .2s ease, border-color .2s ease, transform .2s ease;
 }
 .ghost-btn:hover { border-color: #ead292; background: rgba(234,210,146,.16); transform: translateY(-2px); }
-.ghost-btn-kicker {
-  display: grid; place-items: center; width: 23px; height: 23px; border: 1px solid rgba(234,210,146,.72);
-  border-radius: 50%; font: .55rem 'Space Mono', monospace; letter-spacing: 0;
-}
 .hero-collage {
   position: relative; display: grid; grid-template-columns: .92fr 1.28fr; grid-template-rows: .4fr 1.15fr .72fr;
   gap: 1rem; width: 100%; max-width: 560px; min-height: 590px; justify-self: end;

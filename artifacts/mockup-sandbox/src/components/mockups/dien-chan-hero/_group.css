@@ -144,20 +144,9 @@
 }
 
 .dien-chan-preview .ghost-btn {
-  gap: .7rem;
   border: 1px solid rgba(234, 210, 146, .72);
   background: rgba(234, 210, 146, .08);
   color: #ead292;
-}
-
-.dien-chan-preview .ghost-btn-kicker {
-  display: grid;
-  place-items: center;
-  width: 23px;
-  height: 23px;
-  border: 1px solid rgba(234, 210, 146, .72);
-  border-radius: 50%;
-  font: .55rem 'Space Mono', monospace;
 }
 
 .dien-chan-preview .trust-row {

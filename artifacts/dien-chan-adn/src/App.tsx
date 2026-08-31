@@ -92,7 +92,7 @@ function Hero() {
           </div>
           <div className="hero-actions">
             <button data-testid="button-hero-register" className="cta" onClick={goToPayment}>ĐĂNG KÝ HỌC NGAY <ArrowRight size={16} /></button>
-            <a data-testid="link-hero-outline" className="ghost-btn" href="#lo-trinh"><span className="ghost-btn-kicker">01</span><span>XEM LỘ TRÌNH</span></a>
+            <a data-testid="link-hero-outline" className="ghost-btn" href="#lo-trinh">XEM LỘ TRÌNH</a>
           </div>
           <div className="trust-row">
             <div><strong>11+</strong> Năm Kinh Nghiệm</div>

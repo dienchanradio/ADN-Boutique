@@ -24,7 +24,7 @@ export function Redesigned() {
             </div>
             <div className="hero-actions">
               <span className="cta">ĐĂNG KÝ HỌC NGAY</span>
-              <span className="ghost-btn"><span className="ghost-btn-kicker">01</span><span>XEM LỘ TRÌNH</span></span>
+              <span className="ghost-btn">XEM LỘ TRÌNH</span>
             </div>
             <div className="trust-row">
               <div><strong>11+</strong>Năm Kinh Nghiệm</div>
