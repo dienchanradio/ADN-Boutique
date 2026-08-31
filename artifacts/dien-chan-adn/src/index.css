@@ -83,7 +83,6 @@ a { color: inherit; text-decoration: none; }
 .nav-links { display: flex; align-items: center; gap: 2rem; color: #ede6d6; font-size: .83rem; }
 .nav-links a { transition: color .2s ease; }
 .nav-links a:hover { color: #ead292; }
-.nav-login { border: 1px solid rgba(234,210,146,.5); border-radius: 999px; padding: .62rem 1.1rem; color: #ead292 !important; }
 .mobile-menu { display: none; border: 1px solid rgba(234,210,146,.4); background: transparent; color: #ead292; border-radius: 50%; width: 42px; height: 42px; }
 .hero {
   min-height: 920px; padding: 10.5rem max(1.25rem, calc((100vw - 1160px) / 2)) 5rem;
