@@ -189,17 +189,6 @@
   justify-self: end;
 }
 
-.dien-chan-preview .hero-collage::before {
-  position: absolute;
-  top: 0;
-  left: .1rem;
-  color: rgba(234, 210, 146, .72);
-  content: '25 BÀI GIẢNG  ·  HỌC TRỌN ĐỜI';
-  font: .59rem 'Space Mono', monospace;
-  letter-spacing: .13em;
-  writing-mode: vertical-rl;
-}
-
 .dien-chan-preview .hero-collage img {
   width: 100%;
   height: 100%;
@@ -265,9 +254,6 @@
     border-width: 4px;
   }
 
-  .dien-chan-preview .hero-collage::before {
-    font-size: .48rem;
-  }
 }
 
 /* Preserve the extracted baseline so the canvas comparison stays faithful. */

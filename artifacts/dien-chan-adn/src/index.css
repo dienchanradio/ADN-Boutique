@@ -126,10 +126,6 @@ img { display: block; max-width: 100%; }
   position: relative; display: grid; grid-template-columns: .92fr 1.28fr; grid-template-rows: .4fr 1.15fr .72fr;
   gap: 1rem; width: 100%; max-width: 560px; min-height: 590px; justify-self: end;
 }
-.hero-collage::before {
-  content: '25 BÀI GIẢNG  ·  HỌC TRỌN ĐỜI'; position: absolute; z-index: 1; top: 0; left: .1rem;
-  color: rgba(234,210,146,.72); font: .59rem 'Space Mono', monospace; letter-spacing: .13em; writing-mode: vertical-rl;
-}
 .hero-collage img { width: 100%; height: 100%; object-fit: cover; }
 .hero-image-main {
   grid-column: 2; grid-row: 1 / span 2; border-radius: 1.5rem 1.5rem 1.5rem 4.2rem;
@@ -288,7 +284,6 @@ img { display: block; max-width: 100%; }
   .hero h1 { max-width: 100%; font-size: clamp(2.65rem, 12.5vw, 4.6rem); line-height: .94; }
   .hero-collage { grid-template-rows: .4fr 1.15fr .72fr; min-height: clamp(330px, 90vw, 390px); gap: .6rem; }
   .hero-image-small, .hero-image-third { border-width: 4px; }
-  .hero-collage::before { font-size: .48rem; }
   .section-title { max-width: 100%; font-size: clamp(2rem, 9.5vw, 3.3rem); }
   .section-head { margin-bottom: 2rem; }
   .trust-row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .7rem; }
