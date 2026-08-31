@@ -79,7 +79,7 @@ function Hero() {
     <section className="hero" aria-labelledby="hero-title">
       <div className="hero-grid">
         <div className="reveal">
-          <div className="eyebrow">Diện Chẩn Boutique · Online trọn đời</div>
+          <div className="eyebrow">KHÓA HỌC DIỆN CHẨN ONLINE</div>
           <h1 id="hero-title">CHỈ VỚI 15 PHÚT <span>MỖI NGÀY</span> THÔNG THẠO NHIỀU TUYỆT CHIÊU!</h1>
           <p className="hero-lead">Giải Pháp Chăm Sóc Sức Khỏe Tự Nhiên Dành Cho Người Bận Rộn</p>
           <p className="hero-description">Khóa học như một “chìa khóa” giúp kích hoạt hệ thống tự chữa lành tự nhiên vốn đã được lập trình sẵn trong cơ thể.</p>
