@@ -37,7 +37,7 @@ const assets = {
   hero: '/assets/Section_1a_1787988875343.png',
   classOne: '/assets/Section_1b_1787988875344.jpg',
   classTwo: '/assets/Section_1c_1787988875344.jpg',
-  teacher: '/assets/Section_2_1787988875345.png',
+  teacher: '/assets/Section_2_character_no_bg.png',
   groupOne: '/assets/Section_6a_1787988875345.png',
   groupTwo: '/assets/Section_6b_1787988875346.jpg',
   groupThree: '/assets/Section_6c_1787988875346.jpg',
@@ -131,6 +131,7 @@ const chapters = [
 
 function LearningPath() {
   const [active, setActive] = useState(0);
+  const characterPosition = active < 0 ? 0 : active;
   return (
     <section id="lo-trinh" className="section section-light" aria-labelledby="path-title">
       <div className="split">
@@ -150,7 +151,9 @@ function LearningPath() {
             ))}
           </div>
         </div>
-        <div className="course-portrait"><img src={assets.teacher} alt="Nguyễn Minh Đạt giới thiệu lộ trình học" /></div>
+        <div className={`course-portrait chapter-active-${characterPosition}`} aria-label={`Nhân vật đang chỉ vào ${chapters[characterPosition].title}`}>
+          <img src={assets.teacher} alt={`Nguyễn Minh Đạt chỉ vào ${chapters[characterPosition].title}`} />
+        </div>
       </div>
     </section>
   );
