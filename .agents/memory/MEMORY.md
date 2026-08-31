@@ -1,0 +1,1 @@
+- [Responsive landing layout](responsive-layout.md) — verify desktop, tablet, and mobile independently; avoid fixed actions that obscure content on short screens.

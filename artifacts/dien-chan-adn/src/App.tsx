@@ -267,7 +267,7 @@ function Footer() {
 }
 
 function Landing() {
-  return <div className="page-shell grain"><Nav /><main><Hero /><LearningPath /><Outcomes /><Audience /><Bonus /><Instructor /><Pricing /><Payment /><FAQ /></main><Footer /><button data-testid="button-floating-register" className="cta floating-cta" onClick={goToPayment}>ĐĂNG KÝ HỌC NGAY <ArrowRight size={15} /></button></div>;
+  return <div className="page-shell grain"><Nav /><main><Hero /><LearningPath /><Outcomes /><Audience /><Bonus /><Instructor /><Pricing /><Payment /><FAQ /></main><Footer /></div>;
 }
 
 function AuthHeader() {
