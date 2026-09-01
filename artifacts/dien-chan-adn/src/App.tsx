@@ -10,6 +10,7 @@ import {
   Menu,
   Play,
   RefreshCcw,
+  Sparkles,
   ShieldCheck,
   UserRound,
   X,
@@ -165,7 +166,7 @@ function Outcomes() {
     <section className="section" aria-labelledby="outcome-title">
       <div className="outcome-grid">
         <div><SectionLabel number="03">Kết quả sau khóa học</SectionLabel><h2 id="outcome-title" className="section-title">SAU KHÓA HỌC THÌ <em>BẠN SẼ:</em></h2></div>
-        <div className="outcomes">{items.map((item, index) => <div className="outcome" key={item}><div className="outcome-icon"><Check size={17} /></div><p data-testid={`text-outcome-${index + 1}`}>{item}</p></div>)}</div>
+        <div className="outcomes">{items.map((item, index) => <div className="outcome" key={item}><div className="outcome-icon" aria-hidden="true"><Sparkles size={21} strokeWidth={1.8} /><span className="outcome-icon-dot outcome-icon-dot-one" /><span className="outcome-icon-dot outcome-icon-dot-two" /></div><p data-testid={`text-outcome-${index + 1}`}>{item}</p></div>)}</div>
       </div>
     </section>
   );
