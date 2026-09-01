@@ -1,6 +1,7 @@
 import { Router, type IRouter, type RequestHandler } from "express";
 import { desc, eq, sql } from "drizzle-orm";
 import { getAuth } from "@clerk/express";
+import { ReplitConnectors } from "@replit/connectors-sdk";
 import { db, courseRegistrationsTable } from "@workspace/db";
 import {
   CreateRegistrationBody,
@@ -19,6 +20,35 @@ import {
 
 const router: IRouter = Router();
 const COURSE_PRICE = 875_000;
+const GOOGLE_SHEET_ID = "1JSEMqg8_xSU0iQrfUeRPh1jsh1cN-Ji8LLCyg7vs6Ms";
+
+async function appendRegistrationToSheet(fullName: string, phone: string, email: string): Promise<Response> {
+  const connectors = new ReplitConnectors();
+  const metadataResponse = await connectors.proxy(
+    "google-sheet",
+    `/v4/spreadsheets/${GOOGLE_SHEET_ID}?fields=sheets.properties`,
+    { method: "GET" },
+  );
+
+  if (!metadataResponse.ok) return metadataResponse;
+
+  const metadata = (await metadataResponse.json()) as {
+    sheets?: Array<{ properties?: { title?: string } }>;
+  };
+  const sheetTitle = metadata.sheets?.[0]?.properties?.title;
+  if (!sheetTitle) throw new Error("Google Sheet chưa có trang tính để ghi dữ liệu.");
+
+  const encodedRange = encodeURIComponent(`'${sheetTitle.replace(/'/g, "''")}'!A:C`);
+  return connectors.proxy(
+    "google-sheet",
+    `/v4/spreadsheets/${GOOGLE_SHEET_ID}/values/${encodedRange}:append?valueInputOption=USER_ENTERED`,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ values: [[fullName, phone, email]] }),
+    },
+  );
+}
 
 const requireAdmin: RequestHandler = (req, res, next) => {
   const auth = getAuth(req);
@@ -38,11 +68,6 @@ router.post("/registrations", async (req, res): Promise<void> => {
     return;
   }
 
-  if (!parsed.data.consent) {
-    res.status(400).json({ error: "Bạn cần đồng ý với Điều khoản sử dụng & Chính sách bảo mật." });
-    return;
-  }
-
   const existing = await db
     .select({ id: courseRegistrationsTable.id })
     .from(courseRegistrationsTable)
@@ -54,14 +79,31 @@ router.post("/registrations", async (req, res): Promise<void> => {
     return;
   }
 
+  try {
+    const sheetResponse = await appendRegistrationToSheet(
+      parsed.data.fullName,
+      parsed.data.phone,
+      parsed.data.email,
+    );
+    if (!sheetResponse.ok) {
+      req.log.error({ status: sheetResponse.status }, "Google Sheet rejected course registration");
+      res.status(502).json({ error: "Không thể ghi thông tin vào Google Sheet. Vui lòng kiểm tra quyền truy cập bảng tính." });
+      return;
+    }
+  } catch (error) {
+    req.log.error({ err: error }, "Google Sheet registration forwarding failed");
+    res.status(502).json({ error: "Không thể kết nối Google Sheet lúc này. Vui lòng thử lại sau." });
+    return;
+  }
+
   const [registration] = await db
     .insert(courseRegistrationsTable)
     .values({
       fullName: parsed.data.fullName,
       phone: parsed.data.phone,
       email: parsed.data.email.toLowerCase(),
-      receiptUrl: parsed.data.receiptUrl,
-      consent: parsed.data.consent,
+      receiptUrl: "",
+      consent: false,
     })
     .returning();
 

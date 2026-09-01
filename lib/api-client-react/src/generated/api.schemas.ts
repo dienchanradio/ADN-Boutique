@@ -23,11 +23,6 @@ export interface RegistrationInput {
   /** @minLength 8 */
   phone: string;
   email: string;
-  /** @minLength 8 */
-  password: string;
-  /** @minLength 1 */
-  receiptUrl: string;
-  consent: boolean;
 }
 
 export type RegistrationStatus = typeof RegistrationStatus[keyof typeof RegistrationStatus];

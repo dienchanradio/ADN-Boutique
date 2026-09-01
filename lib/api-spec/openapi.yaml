@@ -193,15 +193,7 @@ components:
         email:
           type: string
           format: email
-        password:
-          type: string
-          minLength: 8
-        receiptUrl:
-          type: string
-          minLength: 1
-        consent:
-          type: boolean
-      required: [fullName, phone, email, password, receiptUrl, consent]
+      required: [fullName, phone, email]
     Registration:
       type: object
       properties:

@@ -208,43 +208,65 @@ function Pricing() {
   );
 }
 
-type RegistrationFields = { fullName: string; phone: string; email: string; password: string; confirmPassword: string; receiptUrl: string; consent: boolean };
+type RegistrationFields = { fullName: string; phone: string; email: string };
 
 function Payment() {
   const createRegistration = useCreateRegistration();
-  const [form, setForm] = useState<RegistrationFields>({ fullName: '', phone: '', email: '', password: '', confirmPassword: '', receiptUrl: '', consent: false });
-  const [fileName, setFileName] = useState('');
+  const [form, setForm] = useState<RegistrationFields>({ fullName: '', phone: '', email: '' });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [success, setSuccess] = useState('');
-  const setField = (key: keyof RegistrationFields, value: string | boolean) => setForm((old) => ({ ...old, [key]: value }));
-  const onFile = (file?: File) => {
-    if (!file) return;
-    setFileName(file.name);
-    const reader = new FileReader();
-    reader.onload = () => setField('receiptUrl', String(reader.result ?? ''));
-    reader.readAsDataURL(file);
-  };
+  const setField = (key: keyof RegistrationFields, value: string) => setForm((old) => ({ ...old, [key]: value }));
   const submit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const next: Record<string, string> = {};
     if (form.fullName.trim().length < 2) next.fullName = 'Vui lòng nhập họ và tên.';
     if (form.phone.trim().length < 8) next.phone = 'Vui lòng nhập số điện thoại hợp lệ.';
     if (!/^\S+@\S+\.\S+$/.test(form.email)) next.email = 'Vui lòng nhập email chính xác.';
-    if (form.password.length < 8) next.password = 'Mật khẩu cần ít nhất 8 ký tự.';
-    if (form.password !== form.confirmPassword) next.confirmPassword = 'Mật khẩu nhập lại chưa khớp.';
-    if (!form.receiptUrl) next.receiptUrl = 'Vui lòng đính kèm ảnh biên lai chuyển khoản.';
-    if (!form.consent) next.consent = 'Bạn cần đồng ý với Điều khoản sử dụng & Chính sách bảo mật.';
     setErrors(next);
     if (Object.keys(next).length) return;
     setSuccess('');
-    createRegistration.mutate({ data: { fullName: form.fullName, phone: form.phone, email: form.email, password: form.password, receiptUrl: form.receiptUrl, consent: form.consent } }, {
-      onSuccess: () => { setSuccess('Đăng ký thành công. Tài khoản của bạn đang chờ xác nhận thanh toán.'); setForm({ fullName: '', phone: '', email: '', password: '', confirmPassword: '', receiptUrl: '', consent: false }); setFileName(''); },
+    createRegistration.mutate({ data: { fullName: form.fullName.trim(), phone: form.phone.trim(), email: form.email.trim() } }, {
+      onSuccess: () => { setSuccess('Đăng ký thành công. Thông tin của bạn đã được tiếp nhận.'); setForm({ fullName: '', phone: '', email: '' }); },
       onError: () => setErrors({ form: 'Không thể gửi đăng ký lúc này. Vui lòng thử lại sau.' }),
     });
   };
   return (
     <section id="thanh-toan" className="section payment" aria-labelledby="payment-title">
-      <div className="payment-grid"><div><SectionLabel number="08">Thanh toán & đăng ký tài khoản</SectionLabel><h2 id="payment-title" className="section-title">CHỈ VÀI BƯỚC ĐƠN GIẢN LÀ CHÚNG TA CÙNG ĐỒNG HÀNH TRỌN ĐỜI</h2><div className="body-copy" style={{ marginTop: '1.5rem' }}><p><strong>Bước 1:</strong> Thanh toán theo mã QR code, nội dung chuyển khoản ghi: Họ tên + SDT + ADN</p><p><strong>Bước 2:</strong> Nhập thông tin vào form Đăng ký tài khoản bên dưới và chờ kích hoạt... thế là xong!</p></div><div className="qr-card"><img data-testid="img-payment-qr" src={assets.qr} alt="Mã QR thanh toán khóa học" /><p>Nội dung: Họ tên + SDT + ADN</p></div></div><form className="form-card" onSubmit={submit} noValidate><h3>Đăng Ký Tài Khoản</h3>{errors.form && <div className="form-error" role="alert">{errors.form}</div>}<div className="form-grid"><Field id="fullName" label="Họ và tên của bạn" placeholder="Nhập họ và tên..." value={form.fullName} error={errors.fullName} onChange={(value) => setField('fullName', value)} /><Field id="phone" label="Số điện thoại (Zalo)" placeholder="Nhập số điện thoại..." value={form.phone} error={errors.phone} onChange={(value) => setField('phone', value)} /><Field id="email" type="email" label="Email nhận tài khoản học" placeholder="Nhập email chính xác..." value={form.email} error={errors.email} onChange={(value) => setField('email', value)} /><Field id="password" type="password" label="Mật khẩu (tự đặt)" placeholder="Tối thiểu 8 ký tự..." value={form.password} error={errors.password} onChange={(value) => setField('password', value)} /><Field id="confirmPassword" type="password" label="Nhập lại mật khẩu" placeholder="Nhập lại mật khẩu..." value={form.confirmPassword} error={errors.confirmPassword} onChange={(value) => setField('confirmPassword', value)} /><div className="field full"><label htmlFor="receiptUrl">Ảnh biên lai chuyển khoản</label><input data-testid="input-receipt" id="receiptUrl" type="file" accept="image/*" onChange={(event) => onFile(event.target.files?.[0])} />{fileName && <span style={{ color: '#ead292', fontSize: '.75rem' }}>{fileName}</span>}{errors.receiptUrl && <span className="form-error">{errors.receiptUrl}</span>}</div></div><label className="checkbox"><input data-testid="input-consent" type="checkbox" checked={form.consent} onChange={(event) => setField('consent', event.target.checked)} /><span>Tôi đồng ý với Điều khoản sử dụng & Chính sách bảo mật</span></label>{errors.consent && <div className="form-error">{errors.consent}</div>}<button data-testid="button-submit-registration" className="cta" type="submit" disabled={createRegistration.isPending} style={{ marginTop: '1rem', width: '100%' }}>{createRegistration.isPending ? 'ĐANG GỬI ĐĂNG KÝ...' : 'ĐĂNG KÝ TÀI KHOẢN'} <LockKeyhole size={16} /></button>{success && <div className="form-success" role="status"><FileCheck2 size={16} style={{ verticalAlign: 'middle', marginRight: 6 }} />{success}</div>}</form></div>
+      <div className="payment-grid">
+        <div>
+          <SectionLabel number="08">Thanh toán & đăng ký tài khoản</SectionLabel>
+          <h2 id="payment-title" className="section-title">CHỈ VÀI BƯỚC ĐƠN GIẢN LÀ CHÚNG TA CÙNG ĐỒNG HÀNH TRỌN ĐỜI</h2>
+          <div className="body-copy" style={{ marginTop: '1.5rem' }}>
+            <p><strong>Bước 1:</strong> Thanh toán theo mã QR code, nội dung chuyển khoản ghi: Họ tên + SDT + ADN</p>
+            <p><strong>Bước 2:</strong> Nhập thông tin vào form Đăng ký học bên cạnh và chờ kích hoạt... thế là xong!</p>
+          </div>
+          <div className="qr-card">
+            <img data-testid="img-payment-qr" src={assets.qr} alt="Mã QR thanh toán khóa học" />
+            <p className="qr-note">Nội dung: Họ tên + SDT + ADN</p>
+            <div className="transfer-info">
+              <p className="transfer-heading">Thông tin chuyển khoản</p>
+              <div className="transfer-details">
+                <p><span>Chủ TK:</span> Nguyễn Minh Đạt</p>
+                <p><span>Số TK:</span> 36810000254898</p>
+                <p><span>Ngân Hàng:</span> BIDV</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <form className="form-card" onSubmit={submit} noValidate>
+          <h3>Đăng Ký Học Ngay</h3>
+          {errors.form && <div className="form-error" role="alert">{errors.form}</div>}
+          <div className="simple-form-fields">
+            <Field id="fullName" label="👤 Họ và tên của bạn" placeholder="Nhập họ và tên..." value={form.fullName} error={errors.fullName} onChange={(value) => setField('fullName', value)} />
+            <Field id="phone" label="📞 Số điện thoại (Zalo)" placeholder="Nhập số điện thoại..." value={form.phone} error={errors.phone} onChange={(value) => setField('phone', value)} />
+            <Field id="email" type="email" label="✉️ Email nhận tài khoản học" placeholder="Nhập email chính xác..." value={form.email} error={errors.email} onChange={(value) => setField('email', value)} />
+          </div>
+          <button data-testid="button-submit-registration" className="cta" type="submit" disabled={createRegistration.isPending} style={{ marginTop: '1.25rem', width: '100%' }}>
+            {createRegistration.isPending ? 'ĐANG GỬI ĐĂNG KÝ...' : 'ĐĂNG KÝ HỌC NGAY'} <ArrowRight size={16} />
+          </button>
+          {success && <div className="form-success" role="status"><FileCheck2 size={16} style={{ verticalAlign: 'middle', marginRight: 6 }} />{success}</div>}
+        </form>
+      </div>
     </section>
   );
 }

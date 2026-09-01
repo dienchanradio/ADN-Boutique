@@ -24,18 +24,12 @@ export const createRegistrationBodyFullNameMin = 2;
 
 export const createRegistrationBodyPhoneMin = 8;
 
-export const createRegistrationBodyPasswordMin = 8;
-
-
 
 
 export const CreateRegistrationBody = zod.object({
   "fullName": zod.string().min(createRegistrationBodyFullNameMin),
   "phone": zod.string().min(createRegistrationBodyPhoneMin),
-  "email": zod.email(),
-  "password": zod.string().min(createRegistrationBodyPasswordMin),
-  "receiptUrl": zod.string().min(1),
-  "consent": zod.boolean()
+  "email": zod.email()
 })
 
 export const CreateRegistrationResponse = zod.object({
