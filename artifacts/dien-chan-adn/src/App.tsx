@@ -2,12 +2,18 @@ import { useMemo, useState } from 'react';
 import { QueryClient, QueryClientProvider, useQueryClient } from '@tanstack/react-query';
 import {
   ArrowRight,
+  BookOpenText,
   Check,
   ChevronDown,
+  ClipboardCheck,
   CircleHelp,
   FileCheck2,
+  Headset,
+  Infinity,
   LockKeyhole,
+  Map,
   Menu,
+  MonitorPlay,
   Play,
   RefreshCcw,
   Sparkles,
@@ -184,9 +190,10 @@ function Audience() {
 
 function Bonus() {
   const items = ['Hỗ trợ 1:1 qua nhóm cộng đồng', 'Miễn phí tham gia các buổi học online nâng cao', 'Ebook độc quyền nhiều tuyệt chiêu', 'Nâng cấp tài khoản 1 năm thành trọn đời', 'Bộ checklist quy trình chăm sóc sức khỏe', 'Bản đồ tư duy lộ trình học.'];
+  const giftIcons = [Headset, MonitorPlay, BookOpenText, Infinity, ClipboardCheck, Map];
   return (
     <section className="section bonus" aria-labelledby="bonus-title">
-      <div className="bonus-grid"><div><SectionLabel number="05">Bonus</SectionLabel><h2 id="bonus-title" className="section-title">BỘ 5 MÓN QUÀ <em>ĐỘC QUYỀN</em> KHI ĐĂNG KÝ!</h2><button data-testid="button-bonus-register" className="cta" onClick={goToPayment} style={{ marginTop: '2rem' }}>ĐĂNG KÝ HỌC NGAY <ArrowRight size={16} /></button></div><div className="gift-grid">{items.map((item, index) => <div className="gift" key={item}><b>{String(index + 1).padStart(2, '0')}</b><p>{item}</p></div>)}</div></div>
+      <div className="bonus-grid"><div><SectionLabel number="05">Bonus</SectionLabel><h2 id="bonus-title" className="section-title">BỘ 5 MÓN QUÀ <em>ĐỘC QUYỀN</em> KHI ĐĂNG KÝ!</h2><button data-testid="button-bonus-register" className="cta" onClick={goToPayment} style={{ marginTop: '2rem' }}>ĐĂNG KÝ HỌC NGAY <ArrowRight size={16} /></button></div><div className="gift-grid">{items.map((item, index) => { const Icon = giftIcons[index]; return <div className="gift" key={item}><div className="gift-icon" aria-hidden="true"><Icon size={23} strokeWidth={1.8} /></div><p>{item}</p></div>; })}</div></div>
     </section>
   );
 }
