@@ -178,7 +178,7 @@ function Audience() {
     <section className="section section-tint" aria-labelledby="audience-title">
       <SectionLabel number="04">Đối tượng phù hợp</SectionLabel>
       <h2 id="audience-title" className="section-title">MÀ TÓM LẠI... <em>AI SẼ CẦN</em> KHÓA HỌC NÀY!</h2>
-      <div className="audience-grid" style={{ marginTop: '3rem' }}>{items.map((item, index) => <article className="audience-card" key={item}><span>0{index + 1}</span><p data-testid={`text-audience-${index + 1}`}>{item}</p></article>)}</div>
+      <div className="audience-grid" style={{ marginTop: '3rem' }}>{items.map((item, index) => <article className="audience-card" key={item}><span className="audience-number" aria-label={`Khu vực ${index + 1}`}>0{index + 1}</span><p data-testid={`text-audience-${index + 1}`}>{item}</p></article>)}</div>
     </section>
   );
 }
