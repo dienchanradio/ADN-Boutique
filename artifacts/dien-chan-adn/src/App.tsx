@@ -43,14 +43,13 @@ const assets = {
   groupTwo: '/assets/Section_6b_1787988875346.jpg',
   groupThree: '/assets/Section_6c_1787988875346.jpg',
   groupFour: '/assets/Section_6d_1787988875347.jpg',
-  footer: '/assets/Footer_1787988875342.jpg',
   qr: '/assets/QR_code_Thanh_Toán_1787988875343.png',
 };
 
 const goToPayment = () => document.getElementById('thanh-toan')?.scrollIntoView({ behavior: 'smooth' });
 
-function Logo({ small = false }: { small?: boolean }) {
-  return <img data-testid="img-logo" className={small ? 'footer-logo' : 'nav-logo'} src={assets.logo} alt="Diện Chẩn Boutique" />;
+function Logo() {
+  return <img data-testid="img-logo" className="nav-logo" src={assets.logo} alt="Diện Chẩn Boutique" />;
 }
 
 function Nav() {
@@ -288,7 +287,7 @@ function FAQ() {
 }
 
 function Footer() {
-  return <footer className="footer" aria-labelledby="footer-title"><div className="footer-content"><Logo small /><SectionLabel number="10">Thông Tin Bản Quyền</SectionLabel><h2 id="footer-title">Kích hoạt khả năng tự chữa lành tự nhiên.</h2><p style={{ color: '#ede6d6', maxWidth: 490, lineHeight: 1.6 }}>Khóa Học: Diện Chẩn Kích Hoạt ADN Tự Chữa Lành<br />Slogan: Kích hoạt khả năng tự chữa lành tự nhiên – Làm chủ sức khỏe từ gốc.</p><p className="eyebrow" style={{ marginTop: '2rem' }}>Thông tin liên hệ & Hỗ trợ:</p><div className="footer-info"><div><span>Hotline/Zalo:</span> 091.999.4282</div><div><span>Email hỗ trợ:</span> dienchanboutique@gmail.com</div><div><span>Website:</span> www.nguyenminhdat.com</div></div><div className="footer-bottom">Copyright: © 2026 Bản quyền thuộc về Nguyễn Minh Đạt. All rights reserved.</div></div></footer>;
+  return <footer className="footer" aria-labelledby="footer-title"><div className="footer-content"><SectionLabel number="10">Thông Tin Bản Quyền</SectionLabel><h2 id="footer-title">Kích hoạt khả năng tự chữa lành tự nhiên.</h2><p style={{ color: '#ede6d6', maxWidth: 490, lineHeight: 1.6 }}>Khóa Học: Diện Chẩn Kích Hoạt ADN Tự Chữa Lành<br />Slogan: Kích hoạt khả năng tự chữa lành tự nhiên – Làm chủ sức khỏe từ gốc.</p><p className="eyebrow" style={{ marginTop: '2rem' }}>Thông tin liên hệ & Hỗ trợ:</p><div className="footer-info"><div><span>Hotline/Zalo:</span> 091.999.4282</div><div><span>Email hỗ trợ:</span> dienchanboutique@gmail.com</div><div><span>Website:</span> www.nguyenminhdat.com</div></div><div className="footer-bottom">Copyright: © 2026 Bản quyền thuộc về Nguyễn Minh Đạt. All rights reserved.</div></div></footer>;
 }
 
 function Landing() {
