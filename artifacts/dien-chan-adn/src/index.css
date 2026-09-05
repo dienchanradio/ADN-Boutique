@@ -287,7 +287,32 @@ img { display: block; max-width: 100%; }
 .price-note { color: #426178; }
 .payment { background: #012c4e; }
 .payment-grid { display: grid; grid-template-columns: .8fr 1.2fr; gap: 4rem; align-items: start; }
-.qr-card { padding: 1.35rem; background: #fdfbf7; border-radius: 1.2rem; color: #012c4e; text-align: center; max-width: 350px; }
+.payment-step-card {
+  position: relative; display: grid; grid-template-columns: 44px 1fr; gap: .85rem; align-items: start;
+  margin-top: 1.7rem; padding: 1rem 1.05rem; border: 1px solid rgba(234,210,146,.36);
+  border-radius: 1.05rem; overflow: hidden; box-shadow: 0 12px 24px rgba(0,18,36,.14);
+}
+.payment-step-card::after {
+  content: ''; position: absolute; width: 130px; height: 130px; right: -76px; top: -76px;
+  border: 1px solid rgba(255,255,255,.16); border-radius: 50%; box-shadow: 0 0 0 14px rgba(255,255,255,.025);
+}
+.payment-step-one { background: linear-gradient(135deg, rgba(207,92,120,.24), rgba(234,210,146,.11) 62%, rgba(118,104,217,.14)); }
+.payment-step-icon, .form-step-icon {
+  display: grid; place-items: center; width: 44px; height: 44px; color: #fffaf2;
+  border: 1px solid rgba(255,255,255,.52); border-radius: 14px 17px 13px 16px;
+  background: linear-gradient(145deg, #f7b267, #cf5c78 52%, #7668d9);
+  box-shadow: 0 7px 15px rgba(207,92,120,.22), inset 0 1px 0 rgba(255,255,255,.45);
+  transform: rotate(-5deg);
+}
+.payment-step-icon svg, .form-step-icon svg { transform: rotate(5deg); filter: drop-shadow(0 2px 2px rgba(113,53,32,.22)); }
+.payment-step-kicker, .form-step-kicker { margin: .05rem 0 .25rem; color: #ead292; font: 700 .72rem 'Space Mono', monospace; letter-spacing: .08em; text-transform: uppercase; }
+.payment-step-kicker span, .form-step-kicker span { color: #ede6d6; font-weight: 400; letter-spacing: 0; text-transform: none; }
+.payment-step-copy, .form-step-copy { margin: 0; color: #fdfbf7; font-size: .92rem; line-height: 1.5; }
+.payment-transfer-chip { display: inline-block; margin: .65rem 0 0; padding: .38rem .55rem; border: 1px solid rgba(234,210,146,.25); border-radius: .5rem; color: #ead292; background: rgba(1,44,78,.32); font-size: .75rem; line-height: 1.4; }
+.payment-transfer-chip strong { color: #fdfbf7; }
+.qr-card { margin-top: 1rem; padding: 1.35rem; border: 1px solid rgba(234,210,146,.38); background: linear-gradient(145deg, #fdfbf7, #ede6d6); border-radius: 1.2rem; color: #012c4e; text-align: center; max-width: 350px; box-shadow: 0 14px 28px rgba(0,18,36,.16); }
+.qr-card-heading { display: flex; justify-content: space-between; align-items: center; gap: .6rem; margin-bottom: .85rem; color: #713520; font: 700 .86rem 'Fraunces', Georgia, serif; }
+.qr-secure { color: #27633b; font: 700 .6rem 'Space Mono', monospace; letter-spacing: .05em; text-transform: uppercase; }
 .qr-card img { width: 100%; display: block; border-radius: .7rem; }
 .qr-note { margin: .8rem 0 .1rem; font-weight: 700; }
 .transfer-info { margin-top: 1.1rem; padding-top: 1rem; border-top: 1px solid rgba(1,44,78,.16); text-align: left; }
@@ -295,8 +320,11 @@ img { display: block; max-width: 100%; }
 .transfer-details { display: grid; gap: .35rem; color: #426178; font-size: .88rem; }
 .transfer-details p { margin: 0; }
 .transfer-details span { color: #012c4e; font-weight: 700; }
-.form-card { width: 100%; border: 1px solid #ead292; border-radius: 1.4rem; padding: clamp(1.2rem, 4vw, 2.5rem); background: rgba(253,251,247,.045); }
-.form-card h3 { margin: 0 0 1.5rem; font: 2rem 'Fraunces', Georgia, serif; color: #ead292; }
+.form-card { width: 100%; border: 1px solid rgba(234,210,146,.66); border-radius: 1.4rem; padding: clamp(1.2rem, 4vw, 2.5rem); background: linear-gradient(145deg, rgba(118,104,217,.16), rgba(253,251,247,.045) 58%, rgba(207,92,120,.1)); box-shadow: 0 18px 34px rgba(0,18,36,.14), inset 0 1px 0 rgba(255,255,255,.08); }
+.form-step-heading { display: grid; grid-template-columns: 44px 1fr; gap: .85rem; align-items: start; margin-bottom: 1.5rem; }
+.form-step-icon { background: linear-gradient(145deg, #7668d9, #cf5c78 58%, #ead292); }
+.form-step-heading h3 { margin: .1rem 0 .35rem; font: 2rem/1 'Fraunces', Georgia, serif; color: #ead292; }
+.form-step-copy { color: #ede6d6; font-size: .85rem; line-height: 1.5; }
 .simple-form-fields { display: grid; gap: 1rem; }
 .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
 .field { display: grid; gap: .42rem; }

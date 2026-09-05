@@ -7,6 +7,7 @@ import {
   Check,
   ChevronDown,
   ClipboardCheck,
+  ClipboardPenLine,
   FileCheck2,
   Headset,
   Infinity,
@@ -15,6 +16,7 @@ import {
   Menu,
   MonitorPlay,
   Play,
+  QrCode,
   RefreshCcw,
   Sparkles,
   UserRound,
@@ -241,11 +243,16 @@ function Payment() {
         <div>
           <SectionLabel number="08">Thanh toán & đăng ký tài khoản</SectionLabel>
           <h2 id="payment-title" className="section-title">CHỈ VÀI BƯỚC ĐƠN GIẢN LÀ CHÚNG TA CÙNG ĐỒNG HÀNH TRỌN ĐỜI</h2>
-          <div className="body-copy" style={{ marginTop: '1.5rem' }}>
-            <p><strong>Bước 1:</strong> Thanh toán theo mã QR code, nội dung chuyển khoản ghi: Họ tên + SDT + ADN</p>
-            <p><strong>Bước 2:</strong> Nhập thông tin vào form Đăng ký học bên cạnh và chờ kích hoạt... thế là xong!</p>
+          <div className="payment-step-card payment-step-one">
+            <div className="payment-step-icon" aria-hidden="true"><QrCode size={21} strokeWidth={1.8} /></div>
+            <div>
+              <p className="payment-step-kicker">Bước 1 <span>· Thanh toán học phí</span></p>
+              <p className="payment-step-copy">Quét mã QR bên dưới để thanh toán nhanh chóng, an toàn.</p>
+              <p className="payment-transfer-chip">Nội dung chuyển khoản: <strong>Họ tên + SDT + ADN</strong></p>
+            </div>
           </div>
           <div className="qr-card">
+            <div className="qr-card-heading"><span>Quét mã QR để thanh toán</span><span className="qr-secure">Nhanh & an toàn</span></div>
             <img data-testid="img-payment-qr" src={assets.qr} alt="Mã QR thanh toán khóa học" />
             <p className="qr-note">Nội dung: Họ tên + SDT + ADN</p>
             <div className="transfer-info">
@@ -259,7 +266,10 @@ function Payment() {
           </div>
         </div>
         <form className="form-card" onSubmit={submit} noValidate>
-          <h3>Đăng Ký Học Ngay</h3>
+          <div className="form-step-heading">
+            <div className="form-step-icon" aria-hidden="true"><ClipboardPenLine size={21} strokeWidth={1.8} /></div>
+            <div><p className="form-step-kicker">Bước 2 <span>· Kích hoạt tài khoản</span></p><h3>Đăng Ký Học Ngay</h3><p className="form-step-copy">Nhập thông tin để chúng tôi xác nhận thanh toán và kích hoạt khóa học cho bạn.</p></div>
+          </div>
           {errors.form && <div className="form-error" role="alert">{errors.form}</div>}
           <div className="simple-form-fields">
             <Field id="fullName" label="👤 Họ và tên của bạn" placeholder="Nhập họ và tên..." value={form.fullName} error={errors.fullName} onChange={(value) => setField('fullName', value)} />
