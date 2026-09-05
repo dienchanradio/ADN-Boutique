@@ -75,6 +75,11 @@ img { display: block; max-width: 100%; }
 .section-tint { background: #ede6d6; color: #012c4e; }
 .section-title { max-width: 760px; font-family: 'Fraunces', Georgia, serif; font-size: clamp(2.35rem, 5vw, 4.7rem); line-height: .98; letter-spacing: -.04em; text-wrap: balance; }
 .section-title em { color: #cf5c78; font-style: normal; }
+.teacher-name {
+  color: #ead292;
+  text-shadow: 0 0 22px rgba(234,210,146,.22);
+  background: linear-gradient(transparent 72%, rgba(207,92,120,.28) 72%);
+}
 .body-copy { color: #ede6d6; font-size: 1.04rem; line-height: 1.75; }
 .light-copy { color: #426178; font-size: 1.04rem; line-height: 1.75; }
 .nav-wrap { position: absolute; z-index: 10; top: 0; left: 0; right: 0; }
