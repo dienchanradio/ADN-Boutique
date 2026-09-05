@@ -194,7 +194,7 @@ function Bonus() {
   const giftIcons = [Headset, MonitorPlay, BookOpenText, Infinity, ClipboardCheck, Map];
   return (
     <section className="section bonus" aria-labelledby="bonus-title">
-      <div className="bonus-grid"><div><SectionLabel number="05">Bonus</SectionLabel><h2 id="bonus-title" className="section-title">BỘ 5 MÓN QUÀ <em>ĐỘC QUYỀN</em> KHI ĐĂNG KÝ!</h2><button data-testid="button-bonus-register" className="cta" onClick={goToPayment} style={{ marginTop: '2rem' }}>ĐĂNG KÝ HỌC NGAY <ArrowRight size={16} /></button></div><div className="gift-grid">{items.map((item, index) => { const Icon = giftIcons[index]; return <div className="gift" key={item}><div className="gift-icon" aria-hidden="true"><Icon size={23} strokeWidth={1.8} /></div><p>{item}</p></div>; })}</div></div>
+      <div className="bonus-grid"><div><SectionLabel number="05">Bonus</SectionLabel><h2 id="bonus-title" className="section-title">BỘ 6 MÓN QUÀ <em>ĐỘC QUYỀN</em> KHI ĐĂNG KÝ!</h2><button data-testid="button-bonus-register" className="cta" onClick={goToPayment} style={{ marginTop: '2rem' }}>ĐĂNG KÝ HỌC NGAY <ArrowRight size={16} /></button></div><div className="gift-grid">{items.map((item, index) => { const Icon = giftIcons[index]; return <div className="gift" key={item}><div className="gift-icon" aria-hidden="true"><Icon size={23} strokeWidth={1.8} /></div><p>{item}</p></div>; })}</div></div>
     </section>
   );
 }
