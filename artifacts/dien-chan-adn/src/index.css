@@ -378,7 +378,8 @@ img { display: block; max-width: 100%; }
   box-shadow: 0 0 0 26px rgba(234,210,146,.035), 0 0 0 52px rgba(234,210,146,.025);
 }
 .footer-content { position: relative; z-index: 1; max-width: 1160px; margin: auto; padding: 5rem max(1.25rem, calc((100vw - 1160px) / 2)); }
-.footer h2 { max-width: 480px; margin: 0 0 1rem; font: clamp(2rem, 5vw, 3.8rem)/.95 'Fraunces', Georgia, serif; color: #ead292; }
+.footer h2 { max-width: 620px; margin: 0 0 .8rem; font: clamp(1.45rem, 3vw, 2.45rem)/1.08 'Fraunces', Georgia, serif; letter-spacing: -.02em; color: #ead292; }
+.footer h2 + p { margin: 0 0 2rem; }
 .footer-info { display: grid; gap: .55rem; color: #ede6d6; font-size: .9rem; }
 .footer-info span { color: #ead292; }
 .footer-bottom { margin-top: 4rem; padding-top: 1.2rem; border-top: 1px solid rgba(253,251,247,.2); color: #ede6d6; font-size: .72rem; }
