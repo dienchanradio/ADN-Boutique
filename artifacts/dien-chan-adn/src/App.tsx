@@ -6,7 +6,6 @@ import {
   Check,
   ChevronDown,
   ClipboardCheck,
-  CircleHelp,
   FileCheck2,
   Headset,
   Infinity,
@@ -290,7 +289,7 @@ const faqs = [
 
 function FAQ() {
   const [open, setOpen] = useState<number | null>(0);
-  return <section className="section faq" aria-labelledby="faq-title"><div style={{ textAlign: 'center' }}><SectionLabel number="09">Câu hỏi thường gặp</SectionLabel><h2 id="faq-title" className="section-title" style={{ margin: '1.2rem auto 0' }}>CÂU HỎI <em>THƯỜNG GẶP</em></h2></div><div className="faq-list">{faqs.map(([question, answer], index) => <div className="faq-item" key={question}><button data-testid={`button-faq-${index + 1}`} className="faq-trigger" onClick={() => setOpen(open === index ? null : index)} aria-expanded={open === index}><CircleHelp size={20} /><span>{index + 1}. {question}</span><ChevronDown size={17} style={{ transform: open === index ? 'rotate(180deg)' : undefined, transition: 'transform .2s' }} /></button>{open === index && <div className="faq-answer" data-testid={`text-faq-answer-${index + 1}`}>{answer}</div>}</div>)}</div></section>;
+  return <section className="section faq" aria-labelledby="faq-title"><div style={{ textAlign: 'center' }}><SectionLabel number="09">Câu hỏi thường gặp</SectionLabel><h2 id="faq-title" className="section-title" style={{ margin: '1.2rem auto 0' }}>CÂU HỎI <em>THƯỜNG GẶP</em></h2></div><div className="faq-list">{faqs.map(([question, answer], index) => <div className="faq-item" key={question}><button data-testid={`button-faq-${index + 1}`} className="faq-trigger" onClick={() => setOpen(open === index ? null : index)} aria-expanded={open === index}><span className="faq-icon" aria-hidden="true"><Sparkles size={17} strokeWidth={1.8} /><span className="faq-icon-dot faq-icon-dot-one" /><span className="faq-icon-dot faq-icon-dot-two" /></span><span className="faq-question">{index + 1}. {question}</span><ChevronDown size={17} style={{ transform: open === index ? 'rotate(180deg)' : undefined, transition: 'transform .2s' }} /></button>{open === index && <div className="faq-answer" data-testid={`text-faq-answer-${index + 1}`}>{answer}</div>}</div>)}</div></section>;
 }
 
 function Footer() {
