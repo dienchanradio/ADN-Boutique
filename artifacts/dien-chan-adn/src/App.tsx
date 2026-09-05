@@ -303,7 +303,7 @@ function FAQ() {
 }
 
 function Footer() {
-  return <footer className="footer" aria-labelledby="footer-title"><div className="footer-content"><SectionLabel number="10">Thông Tin Bản Quyền</SectionLabel><h2 id="footer-title">DIỆN CHẨN KÍCH HOẠT ADN TỰ CHỮA LÀNH</h2><p style={{ color: '#ede6d6', maxWidth: 490, lineHeight: 1.6 }}>Học đúng phương pháp – Thực hành đúng cách.</p><p className="eyebrow" style={{ marginTop: '2rem' }}>THÔNG TIN LIÊN HỆ &amp; HỖ TRỢ</p><div className="footer-info"><div><span>📞 Hotline / Zalo:</span> 091.999.4282</div><div><span>✉️ Email:</span> dienchanboutique@gmail.com</div><div><span>🌐 Website:</span> www.dienchanboutique.com</div></div><div className="footer-bottom">Copyright 2026 Bản quyền thuộc về Nguyễn Minh Đạt. All rights reserved.</div></div></footer>;
+  return <footer className="footer" aria-labelledby="footer-title"><div className="footer-content"><SectionLabel number="10">Thông Tin Bản Quyền</SectionLabel><h2 id="footer-title">DIỆN CHẨN KÍCH HOẠT ADN TỰ CHỮA LÀNH</h2><p style={{ color: '#ede6d6', maxWidth: 490, lineHeight: 1.6 }}>Học đúng phương pháp – Thực hành đúng cách.</p><div className="footer-info"><div><span>📞 Hotline / Zalo:</span> 091.999.4282</div><div><span>✉️ Email:</span> dienchanboutique@gmail.com</div><div><span>🌐 Website:</span> www.dienchanboutique.com</div></div><div className="footer-bottom">Copyright 2026 Bản quyền thuộc về Nguyễn Minh Đạt. All rights reserved.</div></div></footer>;
 }
 
 function Landing() {
