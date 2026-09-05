@@ -278,7 +278,7 @@ img { display: block; max-width: 100%; }
 }
 .proofs-heading-mark svg { transform: rotate(5deg); filter: drop-shadow(0 2px 2px rgba(113,53,32,.22)); }
 .proofs-kicker { margin: 0; color: #ead292; font: .68rem 'Space Mono', monospace; letter-spacing: .16em; text-transform: uppercase; }
-.proofs-intro { margin: .28rem 0 0; color: #ede6d6; font-size: .82rem; line-height: 1.4; }
+.proofs-intro { margin: 0; color: #fdfbf7; font: 600 .95rem/1.4 'DM Sans', sans-serif; letter-spacing: .01em; }
 .proofs { display: grid; gap: .55rem; margin-top: 1rem; }
 .proof { display: grid; grid-template-columns: 31px 1fr; gap: .72rem; align-items: start; padding: .72rem .78rem; border: 1px solid rgba(253,251,247,.1); border-radius: .78rem; background: rgba(1,44,78,.28); color: #ede6d6; line-height: 1.55; transition: transform .2s ease, border-color .2s ease, background .2s ease; }
 .proof:hover { transform: translateX(3px); border-color: rgba(234,210,146,.3); background: rgba(1,44,78,.42); }
