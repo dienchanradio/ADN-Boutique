@@ -1,2 +1,3 @@
 - [Responsive landing layout](responsive-layout.md) — verify desktop, tablet, and mobile independently; avoid fixed actions that obscure content on short screens.
 - [Iterative visual refinement](visual-refinement.md) — preserve the brand while making precise, screenshot-guided UI improvements and removing visual clutter.
+- [GitHub connector upload limit](github-upload-limit.md) — repeated repository writes can be blocked by Cloudflare 403 even when GitHub API quota remains healthy.
