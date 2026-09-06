@@ -20,7 +20,7 @@ import {
 
 const router: IRouter = Router();
 const COURSE_PRICE = 875_000;
-const GOOGLE_SHEET_ID = "1VdLuaX1H-mAwIGw1SP27zZnTiJRuYzR6slV9Q9tTxco";
+const GOOGLE_SHEET_ID = "1VOAe38EmkujtBeN60MDDglawb7GV9Y6_NN4ytvd-2kg";
 
 async function appendRegistrationToSheet(
   fullName: string,
