@@ -67,7 +67,6 @@ function Nav() {
         <div className={`nav-links ${open ? 'open' : ''}`}>
           <a data-testid="link-course" href="#lo-trinh" onClick={() => setOpen(false)}>Khóa học Diện Chẩn</a>
           <a data-testid="link-news" href="#giang-vien" onClick={() => setOpen(false)}>Tin tức</a>
-          <Link data-testid="link-login" href="/dang-nhap">Đăng nhập</Link>
         </div>
         <button data-testid="button-mobile-menu" className="mobile-menu" onClick={() => setOpen((value) => !value)} aria-label="Mở điều hướng">
           {open ? <X size={18} /> : <Menu size={18} />}

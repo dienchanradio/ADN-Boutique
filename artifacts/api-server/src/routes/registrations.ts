@@ -20,7 +20,7 @@ import {
 
 const router: IRouter = Router();
 const COURSE_PRICE = 875_000;
-const GOOGLE_SHEET_ID = "1JSEMqg8_xSU0iQrfUeRPh1jsh1cN-Ji8LLCyg7vs6Ms";
+const GOOGLE_SHEET_ID = "1JmtK_1T8T3AgXWBQTx5s6QrDX0q09nC6IV8v9YNqFYU";
 
 async function appendRegistrationToSheet(fullName: string, phone: string, email: string): Promise<Response> {
   const connectors = new ReplitConnectors();
