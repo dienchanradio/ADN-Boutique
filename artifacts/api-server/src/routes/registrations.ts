@@ -20,9 +20,14 @@ import {
 
 const router: IRouter = Router();
 const COURSE_PRICE = 875_000;
-const GOOGLE_SHEET_ID = "1JmtK_1T8T3AgXWBQTx5s6QrDX0q09nC6IV8v9YNqFYU";
+const GOOGLE_SHEET_ID = "1cnsi0hejLAF7VCZOfQr7Y6ZXiJSRlUitqm2ffhcZgsk";
 
-async function appendRegistrationToSheet(fullName: string, phone: string, email: string): Promise<Response> {
+async function appendRegistrationToSheet(
+  fullName: string,
+  phone: string,
+  email: string,
+  registrationUrl: string,
+): Promise<Response> {
   const connectors = new ReplitConnectors();
   const metadataResponse = await connectors.proxy(
     "google-sheet",
@@ -45,7 +50,7 @@ async function appendRegistrationToSheet(fullName: string, phone: string, email:
     {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ values: [[fullName, phone, email]] }),
+    body: JSON.stringify({ values: [[fullName, phone, email, registrationUrl]] }),
     },
   );
 }
@@ -84,6 +89,7 @@ router.post("/registrations", async (req, res): Promise<void> => {
       parsed.data.fullName,
       parsed.data.phone,
       parsed.data.email,
+      parsed.data.registrationUrl,
     );
     if (!sheetResponse.ok) {
       req.log.error({ status: sheetResponse.status }, "Google Sheet rejected course registration");

@@ -12,4 +12,5 @@ export interface RegistrationInput {
   /** @minLength 8 */
   phone: string;
   email: string;
+  registrationUrl: string;
 }

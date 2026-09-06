@@ -231,7 +231,14 @@ function Payment() {
     setErrors(next);
     if (Object.keys(next).length) return;
     setSuccess('');
-    createRegistration.mutate({ data: { fullName: form.fullName.trim(), phone: form.phone.trim(), email: form.email.trim() } }, {
+    createRegistration.mutate({
+      data: {
+        fullName: form.fullName.trim(),
+        phone: form.phone.trim(),
+        email: form.email.trim(),
+        registrationUrl: window.location.href,
+      },
+    }, {
       onSuccess: () => { setSuccess('Đăng ký thành công. Thông tin của bạn đã được tiếp nhận.'); setForm({ fullName: '', phone: '', email: '' }); },
       onError: () => setErrors({ form: 'Không thể gửi đăng ký lúc này. Vui lòng thử lại sau.' }),
     });

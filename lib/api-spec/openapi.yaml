@@ -193,7 +193,10 @@ components:
         email:
           type: string
           format: email
-      required: [fullName, phone, email]
+        registrationUrl:
+          type: string
+          format: uri
+      required: [fullName, phone, email, registrationUrl]
     Registration:
       type: object
       properties:

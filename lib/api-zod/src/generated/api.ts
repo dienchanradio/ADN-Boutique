@@ -29,7 +29,8 @@ export const createRegistrationBodyPhoneMin = 8;
 export const CreateRegistrationBody = zod.object({
   "fullName": zod.string().min(createRegistrationBodyFullNameMin),
   "phone": zod.string().min(createRegistrationBodyPhoneMin),
-  "email": zod.email()
+  "email": zod.email(),
+  "registrationUrl": zod.url()
 })
 
 export const CreateRegistrationResponse = zod.object({
