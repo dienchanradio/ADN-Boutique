@@ -50,7 +50,7 @@ async function appendRegistrationToSheet(
     {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ values: [[fullName, phone, email, registrationUrl]] }),
+      body: JSON.stringify({ values: [[fullName, phone, email, registrationUrl]] }),
     },
   );
 }

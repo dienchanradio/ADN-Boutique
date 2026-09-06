@@ -239,7 +239,7 @@ function Payment() {
         registrationUrl: window.location.href,
       },
     }, {
-      onSuccess: () => { setSuccess('Đăng ký thành công. Thông tin của bạn đã được tiếp nhận.'); setForm({ fullName: '', phone: '', email: '' }); },
+      onSuccess: () => { window.location.assign('/'); },
       onError: () => setErrors({ form: 'Không thể gửi đăng ký lúc này. Vui lòng thử lại sau.' }),
     });
   };
