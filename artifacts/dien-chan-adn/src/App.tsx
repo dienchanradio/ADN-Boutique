@@ -225,23 +225,32 @@ function Payment() {
   const setField = (key: keyof RegistrationFields, value: string) => setForm((old) => ({ ...old, [key]: value }));
   const submit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    const fullName = form.fullName.trim();
+    const phone = form.phone.trim();
+    const email = form.email.trim();
     const next: Record<string, string> = {};
-    if (form.fullName.trim().length < 2) next.fullName = 'Vui lòng nhập họ và tên.';
-    if (form.phone.trim().length < 8) next.phone = 'Vui lòng nhập số điện thoại hợp lệ.';
-    if (!/^\S+@\S+\.\S+$/.test(form.email)) next.email = 'Vui lòng nhập email chính xác.';
+    if (fullName.length < 2) next.fullName = 'Vui lòng nhập họ và tên.';
+    if (phone.length < 8) next.phone = 'Vui lòng nhập số điện thoại hợp lệ.';
+    if (!/^\S+@\S+\.\S+$/.test(email)) next.email = 'Vui lòng nhập email chính xác.';
     setErrors(next);
     if (Object.keys(next).length) return;
     setSuccess('');
     createRegistration.mutate({
       data: {
-        fullName: form.fullName.trim(),
-        phone: form.phone.trim(),
-        email: form.email.trim(),
+        fullName,
+        phone,
+        email,
         registrationUrl: window.location.href,
       },
     }, {
       onSuccess: () => { window.location.assign('/'); },
-      onError: () => setErrors({ form: 'Không thể gửi đăng ký lúc này. Vui lòng thử lại sau.' }),
+      onError: (error) => {
+        const apiError = error as { data?: { error?: unknown } };
+        const message = typeof apiError.data?.error === 'string'
+          ? apiError.data.error
+          : 'Không thể gửi đăng ký lúc này. Vui lòng thử lại sau.';
+        setErrors({ form: message });
+      },
     });
   };
   return (
