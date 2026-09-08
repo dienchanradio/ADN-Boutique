@@ -32,6 +32,14 @@ app.use(
     },
   }),
 );
+
+// Publish may probe the process root even when the artifact startup health path
+// is configured as /api/healthz. Keep this endpoint independent of auth and
+// external services so a healthy process always returns HTTP 200.
+app.get("/", (_req, res) => {
+  res.status(200).json({ status: "ok" });
+});
+
 app.use(CLERK_PROXY_PATH, clerkProxyMiddleware());
 app.use(cors());
 app.use(express.json());
