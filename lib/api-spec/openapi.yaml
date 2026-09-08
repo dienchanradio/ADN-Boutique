@@ -17,6 +17,19 @@ tags:
   - name: admin
     description: Admin operations
 paths:
+  /:
+    get:
+      operationId: apiRoot
+      tags: [health]
+      summary: API service status
+      description: Returns the API service status at its mounted root.
+      responses:
+        "200":
+          description: API service is healthy
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthStatus"
   /healthz:
     get:
       operationId: healthCheck

@@ -9,6 +9,15 @@ import * as zod from 'zod';
 
 
 /**
+ * Returns the API service status at its mounted root.
+ * @summary API service status
+ */
+export const ApiRootResponse = zod.object({
+  "status": zod.string()
+})
+
+
+/**
  * Returns server health status
  * @summary Health check
  */
