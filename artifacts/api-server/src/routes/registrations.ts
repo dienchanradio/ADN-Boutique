@@ -20,7 +20,7 @@ import {
 
 const router: IRouter = Router();
 const COURSE_PRICE = 875_000;
-const GOOGLE_SHEET_ID = "1cnsi0hejLAF7VCZOfQr7Y6ZXiJSRlUitqm2ffhcZgsk";
+const GOOGLE_SHEET_ID = "1VOAe38EmkujtBeN60MDDglawb7GV9Y6_NN4ytvd-2kg";
 
 async function appendRegistrationToSheet(
   fullName: string,
@@ -43,7 +43,7 @@ async function appendRegistrationToSheet(
   const sheetTitle = metadata.sheets?.[0]?.properties?.title;
   if (!sheetTitle) throw new Error("Google Sheet chưa có trang tính để ghi dữ liệu.");
 
-  const encodedRange = encodeURIComponent(`'${sheetTitle.replace(/'/g, "''")}'!A:C`);
+  const encodedRange = encodeURIComponent(`'${sheetTitle.replace(/'/g, "''")}'!A:D`);
   return connectors.proxy(
     "google-sheet",
     `/v4/spreadsheets/${GOOGLE_SHEET_ID}/values/${encodedRange}:append?valueInputOption=USER_ENTERED`,
@@ -66,7 +66,17 @@ const requireAdmin: RequestHandler = (req, res, next) => {
 };
 
 router.post("/registrations", async (req, res): Promise<void> => {
-  const parsed = CreateRegistrationBody.safeParse(req.body);
+  const rawBody = req.body && typeof req.body === "object" && !Array.isArray(req.body)
+    ? req.body as Record<string, unknown>
+    : {};
+  const normalizedBody = {
+    ...rawBody,
+    fullName: typeof rawBody.fullName === "string" ? rawBody.fullName.trim() : rawBody.fullName,
+    phone: typeof rawBody.phone === "string" ? rawBody.phone.trim() : rawBody.phone,
+    email: typeof rawBody.email === "string" ? rawBody.email.trim().toLowerCase() : rawBody.email,
+    registrationUrl: typeof rawBody.registrationUrl === "string" ? rawBody.registrationUrl.trim() : rawBody.registrationUrl,
+  };
+  const parsed = CreateRegistrationBody.safeParse(normalizedBody);
   if (!parsed.success) {
     req.log.warn({ errors: parsed.error.flatten() }, "Invalid course registration");
     res.status(400).json({ error: parsed.error.message });
@@ -92,7 +102,11 @@ router.post("/registrations", async (req, res): Promise<void> => {
       parsed.data.registrationUrl,
     );
     if (!sheetResponse.ok) {
-      req.log.error({ status: sheetResponse.status }, "Google Sheet rejected course registration");
+      const responseBody = await sheetResponse.text();
+      req.log.error(
+        { status: sheetResponse.status, responseBody: responseBody.slice(0, 500) },
+        "Google Sheet rejected course registration",
+      );
       res.status(502).json({ error: "Không thể ghi thông tin vào Google Sheet. Vui lòng kiểm tra quyền truy cập bảng tính." });
       return;
     }
