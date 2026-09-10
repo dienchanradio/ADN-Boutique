@@ -254,8 +254,37 @@ img { display: block; max-width: 100%; }
 .gift p { position: relative; z-index: 1; margin: .15rem 0 0; line-height: 1.45; font-size: .9rem; color: #713520; }
 .instructor-layout { display: grid; grid-template-columns: .83fr 1.17fr; gap: 4rem; align-items: start; }
 .instructor-photos { display: grid; grid-template-columns: repeat(2,1fr); gap: .7rem; }
-.instructor-photos img { width: 100%; aspect-ratio: 1.15; object-fit: cover; border-radius: .8rem; }
+.instructor-photos img {
+  width: 100%;
+  aspect-ratio: 1.15;
+  padding: 3px;
+  object-fit: cover;
+  border: 1px solid rgba(255,255,255,.34);
+  border-radius: 1rem;
+  background: linear-gradient(125deg, #77e4dc, #f8d982 28%, #ff9fba 55%, #9da8ff 78%, #77e4dc);
+  background-size: 260% 260%;
+  box-shadow: 0 10px 24px rgba(0,18,36,.2), 0 0 0 1px rgba(234,210,146,.08);
+  transition: transform .3s ease, box-shadow .3s ease, filter .3s ease;
+  animation: instructor-frame-flow 9s ease-in-out infinite;
+}
+.instructor-photos img:nth-child(2) { animation-delay: -1.8s; }
+.instructor-photos img:nth-child(3) { animation-delay: -3.6s; }
+.instructor-photos img:nth-child(4) { animation-delay: -5.4s; }
+.instructor-photos img:nth-child(5) { animation-delay: -7.2s; }
+.instructor-photos img:hover {
+  z-index: 1;
+  transform: translateY(-4px) scale(1.015);
+  filter: saturate(1.04);
+  box-shadow: 0 16px 32px rgba(0,18,36,.28), 0 0 18px rgba(119,228,220,.16);
+}
 .instructor-photos img:first-child { grid-column: span 2; aspect-ratio: 1.75; }
+@keyframes instructor-frame-flow {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .instructor-photos img { animation: none; }
+}
 .quote { margin: 2rem 0; padding: 1.4rem 0 1.4rem 1.5rem; border-left: 2px solid #ead292; color: #ede6d6; font: 1.23rem/1.5 'Fraunces', Georgia, serif; }
 .proof-panel {
   position: relative; isolation: isolate; overflow: hidden; margin-top: 1.8rem; padding: 1.2rem;
