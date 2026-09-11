@@ -360,6 +360,11 @@ img { display: block; max-width: 100%; }
 .form-step-heading h3 { margin: .1rem 0 .35rem; font: 2rem/1 'Fraunces', Georgia, serif; color: #ead292; }
 .form-step-copy { color: #ede6d6; font-size: .85rem; line-height: 1.5; }
 .simple-form-fields { display: grid; gap: 1rem; }
+.registration-consent { display: grid; gap: .55rem; margin-top: 1rem; font-family: inherit; }
+.registration-consent-label { display: flex; align-items: flex-start; gap: .55rem; color: #ede6d6; font-size: .76rem; line-height: 1.5; cursor: pointer; }
+.registration-consent-label input { flex: 0 0 auto; width: 15px; height: 15px; margin: .15rem 0 0; accent-color: #cf5c78; cursor: pointer; }
+.registration-consent-label input:focus-visible { outline: 2px solid #ead292; outline-offset: 3px; }
+.registration-privacy-note { margin: 0; color: #ede6d6; font-size: .72rem; line-height: 1.55; }
 .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
 .field { display: grid; gap: .42rem; }
 .field.full { grid-column: 1 / -1; }
