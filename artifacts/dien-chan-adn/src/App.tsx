@@ -260,7 +260,7 @@ function Payment() {
       <div className="payment-grid">
         <div>
           <SectionLabel number="08">Thanh toán & đăng ký tài khoản</SectionLabel>
-          <h2 id="payment-title" className="section-title">CHỈ VÀI BƯỚC <span style={{ color: '#cf5c78' }}>ĐƠN GIẢN</span> LÀ CHÚNG TA CÙNG <span style={{ color: '#cf5c78' }}>ĐỒNG HÀNH</span> TRỌN ĐỜI</h2>
+          <h2 id="payment-title" className="section-title">CHỈ VÀI BƯỚC <span style={{ color: '#cf5c78' }}>ĐƠN GIẢN</span> LÀ CHÚNG TA CÙNG <span style={{ color: '#cf5c78' }}>ĐỒNG HÀNH</span> <span style={{ color: '#cf5c78' }}>TRỌN ĐỜI</span></h2>
           <div className="payment-step-card payment-step-one">
             <div className="payment-step-icon" aria-hidden="true"><QrCode size={21} strokeWidth={1.8} /></div>
             <div>
