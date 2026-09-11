@@ -219,6 +219,7 @@ type RegistrationFields = { fullName: string; phone: string; email: string };
 
 function Payment() {
   const createRegistration = useCreateRegistration();
+  const [termsAccepted, setTermsAccepted] = useState(false);
   const [form, setForm] = useState<RegistrationFields>({ fullName: '', phone: '', email: '' });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [success, setSuccess] = useState('');
@@ -232,6 +233,7 @@ function Payment() {
     if (fullName.length < 2) next.fullName = 'Vui lòng nhập họ và tên.';
     if (phone.length < 8) next.phone = 'Vui lòng nhập số điện thoại hợp lệ.';
     if (!/^\S+@\S+\.\S+$/.test(email)) next.email = 'Vui lòng nhập email chính xác.';
+    if (!termsAccepted) next.terms = 'Vui lòng đồng ý với các điều khoản sử dụng dịch vụ.';
     setErrors(next);
     if (Object.keys(next).length) return;
     setSuccess('');
@@ -258,7 +260,7 @@ function Payment() {
       <div className="payment-grid">
         <div>
           <SectionLabel number="08">Thanh toán & đăng ký tài khoản</SectionLabel>
-          <h2 id="payment-title" className="section-title">CHỈ VÀI BƯỚC ĐƠN GIẢN LÀ CHÚNG TA CÙNG ĐỒNG HÀNH TRỌN ĐỜI</h2>
+          <h2 id="payment-title" className="section-title">CHỈ VÀI BƯỚC <span style={{ color: '#cf5c78' }}>ĐƠN GIẢN</span> LÀ CHÚNG TA CÙNG <span style={{ color: '#cf5c78' }}>ĐỒNG HÀNH</span> <span style={{ color: '#cf5c78' }}>TRỌN ĐỜI</span></h2>
           <div className="payment-step-card payment-step-one">
             <div className="payment-step-icon" aria-hidden="true"><QrCode size={21} strokeWidth={1.8} /></div>
             <div>
@@ -291,6 +293,25 @@ function Payment() {
             <Field id="fullName" label="👤 Họ và tên của bạn" placeholder="Nhập họ và tên..." value={form.fullName} error={errors.fullName} onChange={(value) => setField('fullName', value)} />
             <Field id="phone" label="📞 Số điện thoại (Zalo)" placeholder="Nhập số điện thoại..." value={form.phone} error={errors.phone} onChange={(value) => setField('phone', value)} />
             <Field id="email" type="email" label="✉️ Email nhận tài khoản học" placeholder="Nhập email chính xác..." value={form.email} error={errors.email} onChange={(value) => setField('email', value)} />
+          </div>
+          <div className="registration-consent">
+            <label className="registration-consent-label">
+              <input
+                data-testid="checkbox-registration-terms"
+                type="checkbox"
+                checked={termsAccepted}
+                required
+                aria-invalid={Boolean(errors.terms)}
+                aria-describedby={errors.terms ? 'registration-terms-error' : undefined}
+                onChange={(event) => {
+                  setTermsAccepted(event.target.checked);
+                  setErrors((previous) => { const { terms, ...rest } = previous; return rest; });
+                }}
+              />
+              <span>Tôi đồng ý với các điều khoản sử dụng dịch vụ</span>
+            </label>
+            {errors.terms && <span id="registration-terms-error" className="form-error" role="alert">{errors.terms}</span>}
+            <p className="registration-privacy-note">Thông tin của bạn được bảo mật tuyệt đối và chỉ dùng để liên hệ kích hoạt khoá học</p>
           </div>
           <button data-testid="button-submit-registration" className="cta" type="submit" disabled={createRegistration.isPending} style={{ marginTop: '1.25rem', width: '100%' }}>
             {createRegistration.isPending ? 'ĐANG GỬI ĐĂNG KÝ...' : 'ĐĂNG KÝ HỌC NGAY'} <ArrowRight size={16} />
