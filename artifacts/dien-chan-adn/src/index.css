@@ -135,6 +135,16 @@ img { display: block; max-width: 100%; }
 }
 .hero-collage img:hover { transform: translateY(-6px); box-shadow: 0 24px 40px rgba(0,18,36,.28); }
 .trust-row { display: flex; gap: 1.5rem; flex-wrap: wrap; margin-top: 3rem; border-top: 1px solid rgba(253,251,247,.16); padding-top: 1.3rem; color: #ede6d6; font-size: .79rem; }
+.trust-row > div {
+  flex: 1;
+  min-width: 0;
+  padding: .8rem .55rem;
+  border: 1px solid transparent;
+  border-radius: .75rem;
+  background: linear-gradient(#0b3451, #0b3451) padding-box,
+    linear-gradient(125deg, #80aaa9, #c9bb96 40%, #969eb6 75%, #80aaa9) border-box;
+  box-shadow: 0 4px 12px rgba(0,18,36,.12);
+}
 .trust-row strong { display: block; color: #ead292; font-family: 'Fraunces', Georgia, serif; font-size: 1.4rem; }
 .split { display: grid; grid-template-columns: 1fr .9fr; gap: 5rem; align-items: center; }
 .section-head { margin-bottom: 3rem; }
