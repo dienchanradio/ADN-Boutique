@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { QueryClient, QueryClientProvider, useQueryClient } from '@tanstack/react-query';
 import {
   ArrowRight,
@@ -10,6 +10,7 @@ import {
   ClipboardPenLine,
   FileCheck2,
   Headset,
+  ImagePlus,
   Infinity,
   LockKeyhole,
   Map,
@@ -470,6 +471,7 @@ function AdminPostsListPage() {
 function AdminPostEditor() {
   const [location, setLocation] = useLocation();
   const queryClient = useQueryClient();
+  const contentInputRef = useRef<HTMLTextAreaElement>(null);
   const postsQuery = useListAdminPosts({ query: { queryKey: getListAdminPostsQueryKey(), retry: false } });
   const createPost = useCreateAdminPost();
   const updatePost = useUpdateAdminPost();
@@ -483,17 +485,59 @@ function AdminPostEditor() {
     if (existing) setForm({ title: existing.title, thumbnailUrl: existing.thumbnailUrl, excerpt: existing.excerpt, content: existing.content, status: existing.status });
   }, [existing]);
   const setField = <K extends keyof PostInput>(key: K, value: PostInput[K]) => setForm((current) => ({ ...current, [key]: value }));
-  const upload = async (file: File) => {
+  const uploadFile = async (file: File): Promise<string> => {
     if (!file.type.startsWith('image/')) { setError('Vui lòng chọn tệp hình ảnh.'); return; }
+    const result = await uploadImage.mutateAsync({ data: { name: file.name, size: file.size, contentType: file.type } });
+    const response = await fetch(result.uploadURL, { method: 'PUT', headers: { 'Content-Type': file.type }, body: file });
+    if (!response.ok) throw new Error('upload');
+    return `/api/storage${result.objectPath}`;
+  };
+  const upload = async (file: File) => {
     setError('');
     setUploading(true);
     try {
-      const result = await uploadImage.mutateAsync({ data: { name: file.name, size: file.size, contentType: file.type } });
-      const response = await fetch(result.uploadURL, { method: 'PUT', headers: { 'Content-Type': file.type }, body: file });
-      if (!response.ok) throw new Error('upload');
-      setField('thumbnailUrl', `/api/storage${result.objectPath}`);
+      setField('thumbnailUrl', await uploadFile(file));
     } catch {
       setError('Không thể tải ảnh lên. Vui lòng thử lại.');
+    } finally {
+      setUploading(false);
+    }
+  };
+  const insertContentImages = async (files: FileList) => {
+    const selectedFiles = Array.from(files);
+    if (!selectedFiles.length) return;
+    setError('');
+    setUploading(true);
+    const uploaded: Array<{ file: File; url: string }> = [];
+    try {
+      for (const file of selectedFiles) {
+        try {
+          uploaded.push({ file, url: await uploadFile(file) });
+        } catch {
+          // Keep successfully uploaded files and report a single actionable error below.
+        }
+      }
+      if (uploaded.length) {
+        const textarea = contentInputRef.current;
+        const currentContent = form.content;
+        const start = textarea?.selectionStart ?? currentContent.length;
+        const end = textarea?.selectionEnd ?? start;
+        const snippets = uploaded
+          .map(({ file, url }) => `![${file.name.replace(/[\[\]]/g, '')}](${url})`)
+          .join('\n\n');
+        const nextContent = `${currentContent.slice(0, start)}${snippets}${currentContent.slice(end)}`;
+        setField('content', nextContent);
+        requestAnimationFrame(() => {
+          const nextTextarea = contentInputRef.current;
+          if (!nextTextarea) return;
+          const cursor = start + snippets.length;
+          nextTextarea.focus();
+          nextTextarea.setSelectionRange(cursor, cursor);
+        });
+      }
+      if (uploaded.length !== selectedFiles.length) {
+        setError(uploaded.length ? 'Một số ảnh không tải lên được. Các ảnh còn lại đã được chèn vào nội dung.' : 'Không thể tải ảnh lên. Vui lòng thử lại.');
+      }
     } finally {
       setUploading(false);
     }
@@ -510,7 +554,7 @@ function AdminPostEditor() {
     else createPost.mutate({ data: payload }, options);
   };
   const busy = createPost.isPending || updatePost.isPending || uploading;
-  return <div className="admin-shell"><header className="admin-top"><Link className="admin-brand" href="/"><img src={assets.logo} alt="Diện Chẩn Boutique" />Diện Chẩn / Soạn bài</Link><div className="admin-top-actions"><Link className="small-action admin-top-link" href="/admin/posts">Danh sách bài viết</Link><Link className="small-action admin-top-link" href="/admin">Đơn đăng ký</Link></div></header><main className="admin-main"><Link className="news-back-button" href="/admin/posts">← Danh sách bài viết</Link><div className="admin-page-heading"><div><div className="eyebrow" style={{ color: '#713520' }}>{editId ? 'Chỉnh sửa nội dung' : 'Bài viết mới'}</div><h1>{editId ? 'Chỉnh sửa bài viết' : 'Soạn bài Tin tức'}</h1></div></div><form className="post-editor" onSubmit={(event) => { event.preventDefault(); save('draft'); }}><div className="post-editor-main"><div className="field"><label htmlFor="post-title">Tiêu đề bài viết</label><input id="post-title" data-testid="input-post-title" value={form.title} onChange={(event) => setField('title', event.target.value)} placeholder="Ví dụ: 5 phút chăm sóc cổ vai gáy tại nhà" /></div><div className="field"><label htmlFor="post-excerpt">Tóm tắt</label><textarea id="post-excerpt" data-testid="input-post-excerpt" rows={3} maxLength={500} value={form.excerpt} onChange={(event) => setField('excerpt', event.target.value)} placeholder="Một đoạn ngắn giới thiệu nội dung bài viết..." /></div><div className="field"><label htmlFor="post-content">Nội dung chi tiết <span className="field-hint">Hỗ trợ Markdown</span></label><textarea id="post-content" data-testid="input-post-content" className="post-content-input" rows={18} value={form.content} onChange={(event) => setField('content', event.target.value)} placeholder={'# Tiêu đề phụ\n\nViết nội dung bài viết tại đây...\n\n- Gạch đầu dòng\n- **In đậm** hoặc *in nghiêng*'} /></div></div><aside className="post-editor-side"><div className="field"><label>Ảnh đại diện</label>{form.thumbnailUrl && <img className="post-thumbnail-preview" src={form.thumbnailUrl} alt="Xem trước ảnh đại diện" />}<label className="upload-button"><input data-testid="input-post-thumbnail" type="file" accept="image/*" onChange={(event) => { const file = event.target.files?.[0]; if (file) void upload(file); event.currentTarget.value = ''; }} />{uploading ? 'Đang tải ảnh...' : 'Chọn ảnh từ máy'}</label><span className="field-hint">PNG, JPG hoặc WebP · tối đa 10MB</span></div><div className="post-publish-box"><label htmlFor="post-status">Trạng thái</label><select id="post-status" value={form.status} onChange={(event) => setField('status', event.target.value as PostInput['status'])}><option value="draft">Bản nháp</option><option value="published">Đã xuất bản</option></select><button data-testid="button-save-post" className="cta" type="submit" disabled={busy}>Lưu bản nháp</button><button data-testid="button-publish-post" className="small-action publish-button" type="button" disabled={busy} onClick={() => save('published')}>Lưu & xuất bản</button></div></aside>{error && <div className="form-error post-editor-error" role="alert">{error}</div>}</form></main></div>;
+  return <div className="admin-shell"><header className="admin-top"><Link className="admin-brand" href="/"><img src={assets.logo} alt="Diện Chẩn Boutique" />Diện Chẩn / Soạn bài</Link><div className="admin-top-actions"><Link className="small-action admin-top-link" href="/admin/posts">Danh sách bài viết</Link><Link className="small-action admin-top-link" href="/admin">Đơn đăng ký</Link></div></header><main className="admin-main"><Link className="news-back-button" href="/admin/posts">← Danh sách bài viết</Link><div className="admin-page-heading"><div><div className="eyebrow" style={{ color: '#713520' }}>{editId ? 'Chỉnh sửa nội dung' : 'Bài viết mới'}</div><h1>{editId ? 'Chỉnh sửa bài viết' : 'Soạn bài Tin tức'}</h1></div></div><form className="post-editor" onSubmit={(event) => { event.preventDefault(); save('draft'); }}><div className="post-editor-main"><div className="field"><label htmlFor="post-title">Tiêu đề bài viết</label><input id="post-title" data-testid="input-post-title" value={form.title} onChange={(event) => setField('title', event.target.value)} placeholder="Ví dụ: 5 phút chăm sóc cổ vai gáy tại nhà" /></div><div className="field"><label htmlFor="post-excerpt">Tóm tắt</label><textarea id="post-excerpt" data-testid="input-post-excerpt" rows={3} maxLength={500} value={form.excerpt} onChange={(event) => setField('excerpt', event.target.value)} placeholder="Một đoạn ngắn giới thiệu nội dung bài viết..." /></div><div className="field"><div className="content-field-heading"><label htmlFor="post-content">Nội dung chi tiết <span className="field-hint">Hỗ trợ Markdown</span></label><label className="content-image-button"><input data-testid="input-post-content-images" type="file" accept="image/*" multiple onChange={(event) => { if (event.target.files) void insertContentImages(event.target.files); event.currentTarget.value = ''; }} /><ImagePlus size={15} />{uploading ? 'Đang tải ảnh...' : 'Chèn ảnh vào nội dung'}</label></div><textarea ref={contentInputRef} id="post-content" data-testid="input-post-content" className="post-content-input" rows={18} value={form.content} onChange={(event) => setField('content', event.target.value)} placeholder={'# Tiêu đề phụ\n\nViết một đoạn nội dung...\n\nChèn ảnh vào vị trí con trỏ bằng nút “Chèn ảnh vào nội dung”.'} /><span className="field-hint">Đặt con trỏ sau mỗi đoạn văn rồi chèn một hoặc nhiều ảnh. Ảnh sẽ xuất hiện đúng vị trí đó trong bài viết.</span></div></div><aside className="post-editor-side"><div className="field"><label>Ảnh đại diện</label>{form.thumbnailUrl && <img className="post-thumbnail-preview" src={form.thumbnailUrl} alt="Xem trước ảnh đại diện" />}<label className="upload-button"><input data-testid="input-post-thumbnail" type="file" accept="image/*" onChange={(event) => { const file = event.target.files?.[0]; if (file) void upload(file); event.currentTarget.value = ''; }} />{uploading ? 'Đang tải ảnh...' : 'Chọn ảnh từ máy'}</label><span className="field-hint">PNG, JPG hoặc WebP · tối đa 10MB</span></div><div className="post-publish-box"><label htmlFor="post-status">Trạng thái</label><select id="post-status" value={form.status} onChange={(event) => setField('status', event.target.value as PostInput['status']}><option value="draft">Bản nháp</option><option value="published">Đã xuất bản</option></select><button data-testid="button-save-post" className="cta" type="submit" disabled={busy}>Lưu bản nháp</button><button data-testid="button-publish-post" className="small-action publish-button" type="button" disabled={busy} onClick={() => save('published')}>Lưu & xuất bản</button></div></aside>{error && <div className="form-error post-editor-error" role="alert">{error}</div>}</form></main></div>;
 }
 
 function AdminPage() {
