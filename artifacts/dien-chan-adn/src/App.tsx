@@ -106,7 +106,7 @@ function Hero() {
           <h1 id="hero-title">CHỈ VỚI 15 PHÚT <span>MỖI NGÀY</span> THÔNG THẠO NHIỀU TUYỆT CHIÊU!</h1>
           <p className="hero-lead">Giải Pháp Chăm Sóc Sức Khỏe Tự Nhiên Dành Cho Người Bận Rộn</p>
           <p className="hero-description">Khóa học như một “chìa khóa” giúp kích hoạt hệ thống tự chữa lành tự nhiên vốn đã được lập trình sẵn trong cơ thể.</p>
-          <p className="hero-description">Khóa học Online <strong>“DIỆN CHẨN KÍCH HOẠT ADN TỰ CHỮA LÀNH”.</strong> Đóng gói trọn bộ 25 bài giảng thực chiến giúp bạn khai thông ách tắc tại nhà.</p>
+          <p className="hero-description">Khóa học Online <strong>“DIỆN CHẨN KÍCH HOẠT ADN TỰ CHỮA LÀNH”.</strong> Đóng gói trọn bộ 25 bài giảng thực chiến thành video giúp bạn khai thông ách tắc tại nhà.</p>
           <div className="value-bullets">
             <div className="value-bullet"><Check size={17} /> <span>Cắt đứt nhanh chóng những triệu chứng khó chịu đeo bám dai dẳng hằng ngày.</span></div>
             <div className="value-bullet"><Check size={17} /> <span>Chuẩn hóa quy trình từng bước, dễ nhớ, dễ làm và thấy ngay kết quả.</span></div>
