@@ -561,9 +561,6 @@ img { display: block; max-width: 100%; }
 .contact-orbit { position: absolute; border: 1px solid rgba(234,210,146,.25); border-radius: 50%; transform: rotate(-28deg); }
 .contact-orbit-large { width: 430px; height: 210px; box-shadow: 0 0 0 22px rgba(234,210,146,.035), 0 0 0 44px rgba(234,210,146,.025); }
 .contact-orbit-small { width: 270px; height: 470px; border-color: rgba(207,92,120,.35); transform: rotate(34deg); }
-.contact-sun { position: absolute; width: 118px; height: 118px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #f5e5af, #ead292 42%, rgba(207,92,120,.75) 100%); box-shadow: 0 0 60px rgba(234,210,146,.25); }
-.contact-illustration-copy { position: relative; z-index: 1; color: #012c4e; font: .66rem/1.7 'Space Mono', monospace; letter-spacing: .12em; text-align: center; }
-.contact-illustration-copy em { color: #713520; font-style: normal; }
 .empty-state, .error-state { padding: 3rem 1rem; text-align: center; color: #426178; }
 .skeleton { height: 1rem; border-radius: .4rem; background: linear-gradient(90deg, #204b66, #426178, #204b66); background-size: 200% 100%; animation: shimmer 1.5s infinite; }
 .reveal { animation: reveal .7s both; }
