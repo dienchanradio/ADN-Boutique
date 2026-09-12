@@ -83,7 +83,7 @@ function Nav() {
         <div className={`nav-links ${open ? 'open' : ''}`}>
           <a data-testid="link-course" href="#lo-trinh" onClick={() => setOpen(false)}>Khóa học Diện Chẩn</a>
           <Link data-testid="link-news" href="/tin-tuc" onClick={() => setOpen(false)}>Tin tức</Link>
-          <a data-testid="link-contact" href="#lien-he" onClick={() => setOpen(false)}>Liên Hệ</a>
+          <Link data-testid="link-contact" href="/lien-he" onClick={() => setOpen(false)}>Liên Hệ</Link>
         </div>
         <button data-testid="button-mobile-menu" className="mobile-menu" onClick={() => setOpen((value) => !value)} aria-label="Mở điều hướng">
           {open ? <X size={18} /> : <Menu size={18} />}
@@ -388,6 +388,10 @@ function NewsPostPage() {
   return <div className="news-shell"><header className="news-top"><Link className="admin-brand" href="/">Tin tức Diện Chẩn</Link><Link className="news-back" href="/tin-tuc">Danh sách bài viết</Link></header><main className="news-main news-article"><Link className="news-back-button" href="/tin-tuc">← Tin tức</Link><div className="news-card-date">{new Date(post.publishedAt ?? post.createdAt).toLocaleDateString('vi-VN')}</div><h1>{post.title}</h1><p className="news-article-excerpt">{post.excerpt}</p>{post.thumbnailUrl && <img className="news-article-image" src={post.thumbnailUrl} alt="" />}<div className="markdown-content" dangerouslySetInnerHTML={{ __html: markdownToHtml(post.content) }} /></main></div>;
 }
 
+function ContactPage() {
+  return <div className="contact-page"><header className="contact-top"><Link className="contact-back" href="/">← Về trang chủ</Link></header><main className="contact-main"><section className="contact-card" aria-labelledby="contact-title"><div className="contact-copy"><div className="eyebrow contact-eyebrow">DIỆN CHẨN BOUTIQUE</div><h1 id="contact-title">DIỆN CHẨN KÍCH HOẠT ADN<br />TỰ CHỮA LÀNH</h1><p className="contact-tagline">Học đúng phương pháp – Thực hành đúng cách.</p><div className="contact-info"><a href="tel:0919994282"><span className="contact-icon" aria-hidden="true">⌕</span><span><small>Hotline / Zalo</small><strong>091.999.4282</strong></span></a><a href="mailto:dienchanboutique@gmail.com"><span className="contact-icon" aria-hidden="true">✉</span><span><small>Email</small><strong>dienchanboutique@gmail.com</strong></span></a><a href="https://www.dienchanboutique.com" target="_blank" rel="noreferrer"><span className="contact-icon" aria-hidden="true">◎</span><span><small>Website</small><strong>www.dienchanboutique.com</strong></span></a></div><div className="contact-rule" /><p className="contact-copyright">Copyright 2026 Bản quyền thuộc về Nguyễn Minh Đạt. All rights reserved.</p></div><div className="contact-illustration" aria-hidden="true"><div className="contact-orbit contact-orbit-large" /><div className="contact-orbit contact-orbit-small" /><div className="contact-sun" /><div className="contact-illustration-copy">CHỦ ĐỘNG<br />CHĂM SÓC<br /><em>TỰ NHIÊN</em></div></div></section></main></div>;
+}
+
 function Footer() {
   return <footer id="lien-he" className="footer" aria-labelledby="footer-title"><div className="footer-content"><SectionLabel number="10">Thông Tin Bản Quyền</SectionLabel><h2 id="footer-title">DIỆN CHẨN KÍCH HOẠT ADN TỰ CHỮA LÀNH</h2><p style={{ color: '#ede6d6', maxWidth: 490, lineHeight: 1.6 }}>Học đúng phương pháp – Thực hành đúng cách.</p><div className="footer-info"><div><span>📞 Hotline / Zalo:</span> 091.999.4282</div><div><span>✉️ Email:</span> dienchanboutique@gmail.com</div><div><span>🌐 Website:</span> www.dienchanboutique.com</div></div><div className="footer-bottom">Copyright 2026 Bản quyền thuộc về Nguyễn Minh Đạt. All rights reserved.</div></div></footer>;
 }
@@ -580,7 +584,7 @@ function Summary({ label, value }: { label: string; value: number | string }) {
 }
 
 function Router() {
-  return <ErrorBoundary resetKey={useLocation()[0]}><Switch><Route path="/" component={Landing} /><Route path="/tin-tuc" component={NewsListPage} /><Route path="/tin-tuc/:slug" component={NewsPostPage} /><Route path="/dang-nhap" component={LoginPage} /><Route path="/admin/login" component={AdminLoginPage} /><Route path="/admin/posts/new" component={() => <AdminGate><AdminPostEditor /></AdminGate>} /><Route path="/admin/posts/:id/edit" component={() => <AdminGate><AdminPostEditor /></AdminGate>} /><Route path="/admin/posts" component={() => <AdminGate><AdminPostsListPage /></AdminGate>} /><Route path="/admin" component={() => <AdminGate><AdminPage /></AdminGate>} /><Route component={NotFound} /></Switch></ErrorBoundary>;
+  return <ErrorBoundary resetKey={useLocation()[0]}><Switch><Route path="/" component={Landing} /><Route path="/lien-he" component={ContactPage} /><Route path="/tin-tuc" component={NewsListPage} /><Route path="/tin-tuc/:slug" component={NewsPostPage} /><Route path="/dang-nhap" component={LoginPage} /><Route path="/admin/login" component={AdminLoginPage} /><Route path="/admin/posts/new" component={() => <AdminGate><AdminPostEditor /></AdminGate>} /><Route path="/admin/posts/:id/edit" component={() => <AdminGate><AdminPostEditor /></AdminGate>} /><Route path="/admin/posts" component={() => <AdminGate><AdminPostsListPage /></AdminGate>} /><Route path="/admin" component={() => <AdminGate><AdminPage /></AdminGate>} /><Route component={NotFound} /></Switch></ErrorBoundary>;
 }
 
 function App() {
