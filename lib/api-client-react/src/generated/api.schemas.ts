@@ -129,6 +129,61 @@ export interface AdminSummary {
   totalRevenue: number;
 }
 
+export interface AdminLoginInput {
+  email: string;
+  /** @minLength 1 */
+  password: string;
+}
+
+export interface AdminSession {
+  email: string;
+}
+
+export type PostInputStatus = typeof PostInputStatus[keyof typeof PostInputStatus];
+
+
+export const PostInputStatus = {
+  draft: 'draft',
+  published: 'published',
+} as const;
+
+export interface PostInput {
+  /**
+     * @minLength 3
+     * @maxLength 180
+     */
+  title: string;
+  /** @nullable */
+  thumbnailUrl?: string | null;
+  /** @maxLength 500 */
+  excerpt: string;
+  /** @minLength 1 */
+  content: string;
+  status: PostInputStatus;
+}
+
+export type Post = PostInput & ({
+  id: number;
+  slug: string;
+  authorEmail: string;
+  createdAt: string;
+  updatedAt: string;
+  /** @nullable */
+  publishedAt: string | null;
+});
+
+export interface UploadInput {
+  name: string;
+  size: number;
+  contentType: string;
+}
+
+export interface UploadResponse {
+  uploadURL: string;
+  objectPath: string;
+  metadata: UploadInput;
+}
+
 export type ListAdminOrdersParams = {
 status?: ListAdminOrdersStatus;
 };

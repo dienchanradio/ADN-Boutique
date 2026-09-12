@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { QueryClient, QueryClientProvider, useQueryClient } from '@tanstack/react-query';
 import {
   ArrowRight,
@@ -10,6 +10,7 @@ import {
   ClipboardPenLine,
   FileCheck2,
   Headset,
+  ImagePlus,
   Infinity,
   LockKeyhole,
   Map,
@@ -25,14 +26,28 @@ import {
 import {
   getGetAdminSummaryQueryKey,
   getListAdminOrdersQueryKey,
+  useAdminLogin,
+  useAdminLogout,
+  useCreateAdminPost,
   useCreateRegistration,
+  useDeleteAdminPost,
+  useGetAdminSession,
+  useGetPublishedPost,
   useGetAdminSummary,
+  useListAdminPosts,
   useListAdminOrders,
+  useListPublishedPosts,
   useLoginStudent,
+  useRequestAdminUploadUrl,
   useRequestPasswordReset,
+  useUpdateAdminPost,
   useReviewAdminOrder,
+  getGetAdminSessionQueryKey,
+  getGetPublishedPostQueryKey,
+  getListAdminPostsQueryKey,
 } from '@workspace/api-client-react';
-import { Link, Route, Switch, useLocation, Router as WouterRouter } from 'wouter';
+import type { Post, PostInput } from '@workspace/api-client-react';
+import { Link, Redirect, Route, Switch, useLocation, Router as WouterRouter } from 'wouter';
 import { ErrorBoundary } from '@/components/error-boundary';
 import NotFound from '@/pages/not-found';
 import type { ReactNode } from 'react';
@@ -67,7 +82,8 @@ function Nav() {
       <nav className="nav" aria-label="Điều hướng chính">
         <div className={`nav-links ${open ? 'open' : ''}`}>
           <a data-testid="link-course" href="#lo-trinh" onClick={() => setOpen(false)}>Khóa học Diện Chẩn</a>
-          <a data-testid="link-news" href="#giang-vien" onClick={() => setOpen(false)}>Tin tức</a>
+          <Link data-testid="link-news" href="/tin-tuc" onClick={() => setOpen(false)}>Tin tức</Link>
+          <Link data-testid="link-contact" href="/lien-he" onClick={() => setOpen(false)}>Liên Hệ</Link>
         </div>
         <button data-testid="button-mobile-menu" className="mobile-menu" onClick={() => setOpen((value) => !value)} aria-label="Mở điều hướng">
           {open ? <X size={18} /> : <Menu size={18} />}
@@ -339,8 +355,54 @@ function FAQ() {
   return <section className="section faq" aria-labelledby="faq-title"><div style={{ textAlign: 'center' }}><SectionLabel number="09">Câu hỏi thường gặp</SectionLabel><h2 id="faq-title" className="section-title" style={{ margin: '1.2rem auto 0' }}>CÂU HỎI <em>THƯỜNG GẶP</em></h2></div><div className="faq-list">{faqs.map(([question, answer], index) => <div className="faq-item" key={question}><button data-testid={`button-faq-${index + 1}`} className="faq-trigger" onClick={() => setOpen(open === index ? null : index)} aria-expanded={open === index}><span className="faq-icon" aria-hidden="true"><Sparkles size={17} strokeWidth={1.8} /><span className="faq-icon-dot faq-icon-dot-one" /><span className="faq-icon-dot faq-icon-dot-two" /></span><span className="faq-question">{index + 1}. {question}</span><ChevronDown size={17} style={{ transform: open === index ? 'rotate(180deg)' : undefined, transition: 'transform .2s' }} /></button>{open === index && <div className="faq-answer" data-testid={`text-faq-answer-${index + 1}`}>{answer}</div>}</div>)}</div></section>;
 }
 
+function markdownToHtml(markdown: string): string {
+  const escape = (value: string) => value.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  return markdown.split(/\n{2,}/).map((block) => {
+    const inline = escape(block)
+      .replace(/!\[([^\]]*)\]\(((?:\/|https?:\/\/)[^)]+)\)/g, '<img src="$2" alt="$1" />')
+      .replace(/\[([^\]]+)\]\(((?:https?:\/\/)[^)]+)\)/g, '<a href="$2" target="_blank" rel="noreferrer">$1</a>')
+      .replace(/^### (.+)$/gm, '<h3>$1</h3>')
+      .replace(/^## (.+)$/gm, '<h2>$1</h2>')
+      .replace(/^# (.+)$/gm, '<h1>$1</h1>')
+      .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+      .replace(/\*([^*]+)\*/g, '<em>$1</em>')
+      .replace(/^- (.+)$/gm, '<li>$1</li>')
+      .replace(/\n/g, '<br />');
+    return inline.startsWith('<h') || inline.startsWith('<li>') ? inline : `<p>${inline}</p>`;
+  }).join('');
+}
+
+function NewsArticleContent({ post }: { post: Post }) {
+  return <article className="news-article news-featured-article"><div className="news-card-date">{new Date(post.publishedAt ?? post.createdAt).toLocaleDateString('vi-VN')}</div><h1>{post.title}</h1><p className="news-article-excerpt">{post.excerpt}</p>{post.thumbnailUrl && <img className="news-article-image" src={post.thumbnailUrl} alt="" />}<div className="markdown-content" dangerouslySetInnerHTML={{ __html: markdownToHtml(post.content) }} /></article>;
+}
+
+function NewsArchiveList({ posts }: { posts: Post[] }) {
+  return <section className="news-archive" aria-labelledby="news-archive-title"><div className="eyebrow news-eyebrow">Tin tức Diện Chẩn</div><h2 id="news-archive-title" className="news-archive-title">Các bài viết trước</h2>{posts.length === 0 ? <div className="news-empty news-archive-empty">Chưa có bài viết cũ.</div> : <div className="news-grid news-old-list">{posts.map((post) => <Link className="news-card" href={`/tin-tuc/${post.slug}`} key={post.id}>{post.thumbnailUrl && <img src={post.thumbnailUrl} alt="" /> }<div className="news-card-body"><span className="news-card-date">{new Date(post.publishedAt ?? post.createdAt).toLocaleDateString('vi-VN')}</span><h3>{post.title}</h3><p>{post.excerpt}</p><span className="news-read-more">Đọc bài viết <ArrowRight size={15} /></span></div></Link>)}</div>}</section>;
+}
+
+function NewsListPage() {
+  const postsQuery = useListPublishedPosts();
+  const posts = postsQuery.data ?? [];
+  const latestPost = posts[0];
+  return <div className="news-shell"><header className="news-top"><Link className="admin-brand" href="/">Tin tức Diện Chẩn</Link><Link className="news-back" href="/">Về trang chủ</Link></header><main className="news-main"><div className="eyebrow news-eyebrow">Kiến thức & chăm sóc sức khỏe</div><h1 className="news-title">Tin tức mới nhất</h1><p className="news-intro">Những chia sẻ thực tế từ Diện Chẩn Boutique giúp bạn chủ động chăm sóc sức khỏe mỗi ngày.</p>{postsQuery.isLoading ? <div className="news-grid"><div className="news-card news-skeleton" /></div> : postsQuery.isError ? <div className="news-empty">Không thể tải bài viết lúc này. Vui lòng thử lại sau.</div> : posts.length === 0 ? <div className="news-empty">Chưa có bài viết được xuất bản.</div> : <><NewsArticleContent post={latestPost} /><div className="news-archive-divider" /><NewsArchiveList posts={posts.slice(1)} /></>}</main></div>;
+}
+
+function NewsPostPage() {
+  const [location] = useLocation();
+  const slug = decodeURIComponent(location.replace(/^\/tin-tuc\//, '').split('?')[0]);
+  const postQuery = useGetPublishedPost(slug, { query: { queryKey: getGetPublishedPostQueryKey(slug), enabled: Boolean(slug) } });
+  const post = postQuery.data;
+  if (postQuery.isLoading) return <div className="news-shell"><main className="news-main news-loading">Đang tải bài viết...</main></div>;
+  if (postQuery.isError || !post) return <div className="news-shell"><main className="news-main"><div className="news-empty">Không tìm thấy bài viết.</div><Link className="news-back-button" href="/tin-tuc">Quay lại Tin tức</Link></main></div>;
+  return <div className="news-shell"><header className="news-top"><Link className="admin-brand" href="/">Tin tức Diện Chẩn</Link><Link className="news-back" href="/tin-tuc">Tin tức mới nhất</Link></header><main className="news-main"><Link className="news-back-button" href="/tin-tuc">← Tin tức</Link><NewsArticleContent post={post} /></main></div>;
+}
+
+function ContactPage() {
+  return <div className="contact-page"><header className="contact-top"><Link className="contact-back" href="/">← Về trang chủ</Link></header><main className="contact-main"><section className="contact-card" aria-labelledby="contact-title"><div className="contact-copy"><div className="eyebrow contact-eyebrow">DIỆN CHẨN BOUTIQUE</div><h1 id="contact-title">DIỆN CHẨN KÍCH HOẠT ADN<br />TỰ CHỮA LÀNH</h1><p className="contact-tagline">Học đúng phương pháp – Thực hành đúng cách.</p><div className="contact-info"><a href="tel:0919994282"><span className="contact-icon" aria-hidden="true">⌕</span><span><small>Hotline / Zalo</small><strong>091.999.4282</strong></span></a><a href="mailto:dienchanboutique@gmail.com"><span className="contact-icon" aria-hidden="true">✉</span><span><small>Email</small><strong>dienchanboutique@gmail.com</strong></span></a><a href="https://www.khoahocdienchan.com" target="_blank" rel="noreferrer"><span className="contact-icon" aria-hidden="true">◎</span><span><small>Website</small><strong>www.khoahocdienchan.com</strong></span></a></div><div className="contact-rule" /><p className="contact-copyright">Copyright 2026 Bản quyền thuộc về Nguyễn Minh Đạt. All rights reserved.</p></div><div className="contact-illustration" aria-hidden="true"><div className="contact-orbit contact-orbit-large" /><div className="contact-orbit contact-orbit-small" /></div></section></main></div>;
+}
+
 function Footer() {
-  return <footer className="footer" aria-labelledby="footer-title"><div className="footer-content"><SectionLabel number="10">Thông Tin Bản Quyền</SectionLabel><h2 id="footer-title">DIỆN CHẨN KÍCH HOẠT ADN TỰ CHỮA LÀNH</h2><p style={{ color: '#ede6d6', maxWidth: 490, lineHeight: 1.6 }}>Học đúng phương pháp – Thực hành đúng cách.</p><div className="footer-info"><div><span>📞 Hotline / Zalo:</span> 091.999.4282</div><div><span>✉️ Email:</span> dienchanboutique@gmail.com</div><div><span>🌐 Website:</span> www.dienchanboutique.com</div></div><div className="footer-bottom">Copyright 2026 Bản quyền thuộc về Nguyễn Minh Đạt. All rights reserved.</div></div></footer>;
+  return <footer id="lien-he" className="footer" aria-labelledby="footer-title"><div className="footer-content"><SectionLabel number="10">Thông Tin Bản Quyền</SectionLabel><h2 id="footer-title">DIỆN CHẨN KÍCH HOẠT ADN TỰ CHỮA LÀNH</h2><p style={{ color: '#ede6d6', maxWidth: 490, lineHeight: 1.6 }}>Học đúng phương pháp – Thực hành đúng cách.</p><div className="footer-info"><div><span>📞 Hotline / Zalo:</span> 091.999.4282</div><div><span>✉️ Email:</span> dienchanboutique@gmail.com</div><div><span>🌐 Website:</span> www.khoahocdienchan.com</div></div><div className="footer-bottom">Copyright 2026 Bản quyền thuộc về Nguyễn Minh Đạt. All rights reserved.</div></div></footer>;
 }
 
 function Landing() {
@@ -373,6 +435,142 @@ function LoginPage() {
   return <div className="auth-shell"><AuthHeader /><div className="auth-art"><div className="eyebrow">Diện Chẩn Boutique · Học online</div><div><h1>Tự chăm sóc.<br />Tự chủ hơn.</h1><p>Học những thao tác nhẹ nhàng, thực tế và vừa vặn với một ngày bận rộn.</p></div><div className="mono" style={{ color: '#ead292', fontSize: '.7rem' }}>DIỆN CHẨN KÍCH HOẠT ADN TỰ CHỮA LÀNH</div></div><div className="auth-panel"><form className="auth-form" onSubmit={mode === 'login' ? submitLogin : submitReset}><div className="eyebrow" style={{ color: '#713520' }}>{mode === 'login' ? 'Khu vực học viên' : 'Khôi phục quyền truy cập'}</div><h2>{mode === 'login' ? 'Chào mừng trở lại.' : 'Đặt lại mật khẩu.'}</h2><p>{mode === 'login' ? 'Đăng nhập để tiếp tục hành trình học của bạn.' : 'Nhập email đã đăng ký. Chúng tôi sẽ gửi liên kết an toàn để bạn tự đặt lại mật khẩu.'}</p>{error && <div className="form-error" role="alert" style={{ color: '#9c2e4c', marginBottom: '1rem' }}>{error}</div>}{message && <div className="auth-message" role="status">{message}</div>}<div className="field"><label htmlFor="auth-email">Email</label><input data-testid="input-auth-email" id="auth-email" type="email" placeholder="ten@email.com" value={email} onChange={(event) => setEmail(event.target.value)} /></div>{mode === 'login' && <div className="field"><label htmlFor="auth-password">Mật khẩu</label><input data-testid="input-auth-password" id="auth-password" type="password" placeholder="Nhập mật khẩu của bạn" value={password} onChange={(event) => setPassword(event.target.value)} /></div>}<button data-testid="button-auth-submit" className="cta" type="submit" style={{ width: '100%', marginTop: '.7rem' }}>{(login.isPending || reset.isPending) ? 'ĐANG XỬ LÝ...' : mode === 'login' ? 'ĐĂNG NHẬP' : 'GỬI LIÊN KẾT ĐẶT LẠI'} <ArrowRight size={16} /></button><div className="auth-links">{mode === 'login' ? <button data-testid="button-forgot-password" className="text-button" type="button" onClick={() => { setMode('reset'); setMessage(''); setError(''); }}>Quên mật khẩu?</button> : <button data-testid="button-back-login" className="text-button" type="button" onClick={() => { setMode('login'); setMessage(''); setError(''); }}>Quay lại đăng nhập</button>}<button data-testid="button-back-home" className="text-button" type="button" onClick={() => setLocation('/')}>Về trang chủ</button></div></form></div></div>;
 }
 
+function AdminLoginPage() {
+  const [, setLocation] = useLocation();
+  const login = useAdminLogin();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const submit = (event: React.FormEvent) => {
+    event.preventDefault();
+    setError('');
+    if (!email.trim() || !password) {
+      setError('Vui lòng nhập email và mật khẩu quản trị viên.');
+      return;
+    }
+    login.mutate({ data: { email: email.trim(), password } }, {
+      onSuccess: () => setLocation('/admin/posts/new'),
+      onError: (reason) => {
+        const response = reason as { data?: { error?: string } };
+        setError(response.data?.error ?? 'Đăng nhập quản trị viên không thành công.');
+      },
+    });
+  };
+  return <div className="admin-login-shell"><div className="admin-login-card"><Link className="admin-login-logo" href="/"><img src={assets.logo} alt="Diện Chẩn Boutique" /></Link><div className="eyebrow">Khu vực quản trị</div><h1>Đăng nhập Admin</h1><p>Đăng nhập để soạn thảo và xuất bản bài viết Tin tức.</p><form onSubmit={submit}><div className="field"><label htmlFor="admin-email">Email quản trị viên</label><input id="admin-email" data-testid="input-admin-email" type="email" value={email} onChange={(event) => setEmail(event.target.value)} autoComplete="username" /></div><div className="field"><label htmlFor="admin-password">Mật khẩu</label><input id="admin-password" data-testid="input-admin-password" type="password" value={password} onChange={(event) => setPassword(event.target.value)} autoComplete="current-password" /></div>{error && <div className="form-error admin-login-error" role="alert">{error}</div>}<button data-testid="button-admin-login" className="cta" type="submit" disabled={login.isPending}>{login.isPending ? 'ĐANG ĐĂNG NHẬP...' : 'ĐĂNG NHẬP ADMIN'} <ArrowRight size={16} /></button></form><Link className="admin-login-home" href="/">← Về trang chủ</Link></div></div>;
+}
+
+function AdminGate({ children }: { children: ReactNode }) {
+  const session = useGetAdminSession({ query: { queryKey: getGetAdminSessionQueryKey(), retry: false } });
+  if (session.isLoading) return <div className="admin-loading">Đang kiểm tra phiên quản trị...</div>;
+  if (session.isError || !session.data) return <Redirect to="/admin/login" />;
+  return <>{children}</>;
+}
+
+const emptyPost: PostInput = { title: '', thumbnailUrl: null, excerpt: '', content: '', status: 'draft' };
+
+function AdminPostsListPage() {
+  const [, setLocation] = useLocation();
+  const queryClient = useQueryClient();
+  const postsQuery = useListAdminPosts({ query: { queryKey: getListAdminPostsQueryKey(), retry: false } });
+  const deletePost = useDeleteAdminPost();
+  const logout = useAdminLogout();
+  const posts = postsQuery.data ?? [];
+  const handleDelete = (post: Post) => {
+    if (!window.confirm(`Xóa bài viết “${post.title}”?`)) return;
+    deletePost.mutate({ id: post.id }, { onSuccess: () => { void queryClient.invalidateQueries({ queryKey: ['/api/admin/posts'] }); } });
+  };
+  return <div className="admin-shell"><header className="admin-top"><Link className="admin-brand" href="/"><img src={assets.logo} alt="Diện Chẩn Boutique" />Diện Chẩn / Tin tức</Link><div className="admin-top-actions"><Link className="small-action admin-top-link" href="/admin">Đơn đăng ký</Link><button className="small-action admin-top-link" onClick={() => logout.mutate(undefined, { onSuccess: () => setLocation('/admin/login') })}>Đăng xuất</button></div></header><main className="admin-main"><div className="admin-page-heading"><div><div className="eyebrow" style={{ color: '#713520' }}>Quản lý nội dung</div><h1>Bài viết Tin tức</h1></div><Link className="cta admin-create-button" href="/admin/posts/new">+ Soạn bài mới</Link></div>{postsQuery.isLoading ? <div className="news-empty">Đang tải bài viết...</div> : posts.length === 0 ? <div className="news-empty">Chưa có bài viết. Hãy tạo bài đầu tiên.</div> : <div className="admin-post-list">{posts.map((post) => <article className="admin-post-row" key={post.id}>{post.thumbnailUrl && <img src={post.thumbnailUrl} alt="" />}<div><span className={`admin-post-status ${post.status}`}>{post.status === 'published' ? 'Đã xuất bản' : 'Bản nháp'}</span><h2>{post.title}</h2><p>{post.excerpt || 'Chưa có tóm tắt.'}</p><small>Cập nhật {new Date(post.updatedAt).toLocaleDateString('vi-VN')}</small></div><div className="admin-post-actions"><Link className="small-action" href={`/admin/posts/${post.id}/edit`}>Sửa</Link><button className="small-action reject" onClick={() => handleDelete(post)} disabled={deletePost.isPending}>Xóa</button></div></article>)}</div>}</main></div>;
+}
+
+function AdminPostEditor() {
+  const [location, setLocation] = useLocation();
+  const queryClient = useQueryClient();
+  const contentInputRef = useRef<HTMLTextAreaElement>(null);
+  const postsQuery = useListAdminPosts({ query: { queryKey: getListAdminPostsQueryKey(), retry: false } });
+  const createPost = useCreateAdminPost();
+  const updatePost = useUpdateAdminPost();
+  const uploadImage = useRequestAdminUploadUrl();
+  const editId = Number(/^\/admin\/posts\/(\d+)\/edit/.exec(location)?.[1] ?? 0);
+  const existing = editId ? postsQuery.data?.find((post) => post.id === editId) : undefined;
+  const [form, setForm] = useState<PostInput>(emptyPost);
+  const [error, setError] = useState('');
+  const [uploading, setUploading] = useState(false);
+  useEffect(() => {
+    if (existing) setForm({ title: existing.title, thumbnailUrl: existing.thumbnailUrl, excerpt: existing.excerpt, content: existing.content, status: existing.status });
+  }, [existing]);
+  const setField = <K extends keyof PostInput>(key: K, value: PostInput[K]) => setForm((current) => ({ ...current, [key]: value }));
+  const uploadFile = async (file: File): Promise<string> => {
+    if (!file.type.startsWith('image/')) throw new Error('image');
+    const result = await uploadImage.mutateAsync({ data: { name: file.name, size: file.size, contentType: file.type } });
+    const response = await fetch(result.uploadURL, { method: 'PUT', headers: { 'Content-Type': file.type }, body: file });
+    if (!response.ok) throw new Error('upload');
+    return `/api/storage${result.objectPath}`;
+  };
+  const upload = async (file: File) => {
+    setError('');
+    setUploading(true);
+    try {
+      setField('thumbnailUrl', await uploadFile(file));
+    } catch {
+      setError('Không thể tải ảnh lên. Vui lòng thử lại.');
+    } finally {
+      setUploading(false);
+    }
+  };
+  const insertContentImages = async (files: FileList) => {
+    const selectedFiles = Array.from(files);
+    if (!selectedFiles.length) return;
+    setError('');
+    setUploading(true);
+    const uploaded: Array<{ file: File; url: string }> = [];
+    try {
+      for (const file of selectedFiles) {
+        try {
+          uploaded.push({ file, url: await uploadFile(file) });
+        } catch {
+          // Keep successfully uploaded files and report a single actionable error below.
+        }
+      }
+      if (uploaded.length) {
+        const textarea = contentInputRef.current;
+        const currentContent = form.content;
+        const start = textarea?.selectionStart ?? currentContent.length;
+        const end = textarea?.selectionEnd ?? start;
+        const snippets = uploaded
+          .map(({ file, url }) => `![${file.name.replace(/[\[\]]/g, '')}](${url})`)
+          .join('\n\n');
+        const nextContent = `${currentContent.slice(0, start)}${snippets}${currentContent.slice(end)}`;
+        setField('content', nextContent);
+        requestAnimationFrame(() => {
+          const nextTextarea = contentInputRef.current;
+          if (!nextTextarea) return;
+          const cursor = start + snippets.length;
+          nextTextarea.focus();
+          nextTextarea.setSelectionRange(cursor, cursor);
+        });
+      }
+      if (uploaded.length !== selectedFiles.length) {
+        setError(uploaded.length ? 'Một số ảnh không tải lên được. Các ảnh còn lại đã được chèn vào nội dung.' : 'Không thể tải ảnh lên. Vui lòng thử lại.');
+      }
+    } finally {
+      setUploading(false);
+    }
+  };
+  const save = (status: PostInput['status']) => {
+    const payload = { ...form, status };
+    if (payload.title.trim().length < 3 || !payload.content.trim()) {
+      setError('Vui lòng nhập tiêu đề và nội dung bài viết.');
+      return;
+    }
+    setError('');
+    const options = { onSuccess: () => { void queryClient.invalidateQueries({ queryKey: ['/api/admin/posts'] }); setLocation('/admin/posts'); }, onError: () => setError('Không thể lưu bài viết. Vui lòng thử lại.') };
+    if (editId) updatePost.mutate({ id: editId, data: payload }, options);
+    else createPost.mutate({ data: payload }, options);
+  };
+  const busy = createPost.isPending || updatePost.isPending || uploading;
+  return <div className="admin-shell"><header className="admin-top"><Link className="admin-brand" href="/"><img src={assets.logo} alt="Diện Chẩn Boutique" />Diện Chẩn / Soạn bài</Link><div className="admin-top-actions"><Link className="small-action admin-top-link" href="/admin/posts">Danh sách bài viết</Link><Link className="small-action admin-top-link" href="/admin">Đơn đăng ký</Link></div></header><main className="admin-main"><Link className="news-back-button" href="/admin/posts">← Danh sách bài viết</Link><div className="admin-page-heading"><div><div className="eyebrow" style={{ color: '#713520' }}>{editId ? 'Chỉnh sửa nội dung' : 'Bài viết mới'}</div><h1>{editId ? 'Chỉnh sửa bài viết' : 'Soạn bài Tin tức'}</h1></div></div><form className="post-editor" onSubmit={(event) => { event.preventDefault(); save('draft'); }}><div className="post-editor-main"><div className="field"><label htmlFor="post-title">Tiêu đề bài viết</label><input id="post-title" data-testid="input-post-title" value={form.title} onChange={(event) => setField('title', event.target.value)} placeholder="Ví dụ: 5 phút chăm sóc cổ vai gáy tại nhà" /></div><div className="field"><label htmlFor="post-excerpt">Tóm tắt</label><textarea id="post-excerpt" data-testid="input-post-excerpt" rows={3} maxLength={500} value={form.excerpt} onChange={(event) => setField('excerpt', event.target.value)} placeholder="Một đoạn ngắn giới thiệu nội dung bài viết..." /></div><div className="field"><div className="content-field-heading"><label htmlFor="post-content">Nội dung chi tiết <span className="field-hint">Hỗ trợ Markdown</span></label><label className="content-image-button"><input data-testid="input-post-content-images" type="file" accept="image/*" multiple onChange={(event) => { if (event.target.files) void insertContentImages(event.target.files); event.currentTarget.value = ''; }} /><ImagePlus size={15} />{uploading ? 'Đang tải ảnh...' : 'Chèn ảnh vào nội dung'}</label></div><textarea ref={contentInputRef} id="post-content" data-testid="input-post-content" className="post-content-input" rows={18} value={form.content} onChange={(event) => setField('content', event.target.value)} placeholder={'# Tiêu đề phụ\n\nViết một đoạn nội dung...\n\nChèn ảnh vào vị trí con trỏ bằng nút “Chèn ảnh vào nội dung”.'} /><span className="field-hint">Đặt con trỏ sau mỗi đoạn văn rồi chèn một hoặc nhiều ảnh. Ảnh sẽ xuất hiện đúng vị trí đó trong bài viết.</span></div></div><aside className="post-editor-side"><div className="field"><label>Ảnh đại diện</label>{form.thumbnailUrl && <img className="post-thumbnail-preview" src={form.thumbnailUrl} alt="Xem trước ảnh đại diện" />}<label className="upload-button"><input data-testid="input-post-thumbnail" type="file" accept="image/*" onChange={(event) => { const file = event.target.files?.[0]; if (file) void upload(file); event.currentTarget.value = ''; }} />{uploading ? 'Đang tải ảnh...' : 'Chọn ảnh từ máy'}</label><span className="field-hint">PNG, JPG hoặc WebP · tối đa 10MB</span></div><div className="post-publish-box"><label htmlFor="post-status">Trạng thái</label><select id="post-status" value={form.status} onChange={(event) => setField('status', event.target.value as PostInput['status'])}><option value="draft">Bản nháp</option><option value="published">Đã xuất bản</option></select><button data-testid="button-save-post" className="cta" type="submit" disabled={busy}>Lưu bản nháp</button><button data-testid="button-publish-post" className="small-action publish-button" type="button" disabled={busy} onClick={() => save('published')}>Lưu & xuất bản</button></div></aside>{error && <div className="form-error post-editor-error" role="alert">{error}</div>}</form></main></div>;
+}
+
 function AdminPage() {
   const queryClient = useQueryClient();
   const [status, setStatus] = useState<'all' | 'pending' | 'paid' | 'rejected'>('all');
@@ -395,7 +593,7 @@ function Summary({ label, value }: { label: string; value: number | string }) {
 }
 
 function Router() {
-  return <ErrorBoundary resetKey={useLocation()[0]}><Switch><Route path="/" component={Landing} /><Route path="/dang-nhap" component={LoginPage} /><Route path="/admin" component={AdminPage} /><Route component={NotFound} /></Switch></ErrorBoundary>;
+  return <ErrorBoundary resetKey={useLocation()[0]}><Switch><Route path="/" component={Landing} /><Route path="/lien-he" component={ContactPage} /><Route path="/tin-tuc" component={NewsListPage} /><Route path="/tin-tuc/:slug" component={NewsPostPage} /><Route path="/dang-nhap" component={LoginPage} /><Route path="/admin/login" component={AdminLoginPage} /><Route path="/admin/posts/new" component={() => <AdminGate><AdminPostEditor /></AdminGate>} /><Route path="/admin/posts/:id/edit" component={() => <AdminGate><AdminPostEditor /></AdminGate>} /><Route path="/admin/posts" component={() => <AdminGate><AdminPostsListPage /></AdminGate>} /><Route path="/admin" component={() => <AdminGate><AdminPage /></AdminGate>} /><Route component={NotFound} /></Switch></ErrorBoundary>;
 }
 
 function App() {

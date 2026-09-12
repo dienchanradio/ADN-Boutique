@@ -142,3 +142,240 @@ export const GetAdminSummaryResponse = zod.object({
 })
 
 
+/**
+ * @summary List published news posts
+ */
+export const listPublishedPostsResponseOneTitleMin = 3;
+export const listPublishedPostsResponseOneTitleMax = 180;
+
+export const listPublishedPostsResponseOneExcerptMax = 500;
+
+
+
+
+export const ListPublishedPostsResponseItem = zod.object({
+  "title": zod.string().min(listPublishedPostsResponseOneTitleMin).max(listPublishedPostsResponseOneTitleMax),
+  "thumbnailUrl": zod.string().nullish(),
+  "excerpt": zod.string().max(listPublishedPostsResponseOneExcerptMax),
+  "content": zod.string().min(1),
+  "status": zod.enum(['draft', 'published'])
+}).and(zod.object({
+  "id": zod.int(),
+  "slug": zod.string(),
+  "authorEmail": zod.string(),
+  "createdAt": zod.coerce.date(),
+  "updatedAt": zod.coerce.date(),
+  "publishedAt": zod.coerce.date().nullable()
+}))
+export const ListPublishedPostsResponse = zod.array(ListPublishedPostsResponseItem)
+
+
+/**
+ * @summary Get a published news post
+ */
+export const GetPublishedPostParams = zod.object({
+  "slug": zod.coerce.string()
+})
+
+export const getPublishedPostResponseOneTitleMin = 3;
+export const getPublishedPostResponseOneTitleMax = 180;
+
+export const getPublishedPostResponseOneExcerptMax = 500;
+
+
+
+
+export const GetPublishedPostResponse = zod.object({
+  "title": zod.string().min(getPublishedPostResponseOneTitleMin).max(getPublishedPostResponseOneTitleMax),
+  "thumbnailUrl": zod.string().nullish(),
+  "excerpt": zod.string().max(getPublishedPostResponseOneExcerptMax),
+  "content": zod.string().min(1),
+  "status": zod.enum(['draft', 'published'])
+}).and(zod.object({
+  "id": zod.int(),
+  "slug": zod.string(),
+  "authorEmail": zod.string(),
+  "createdAt": zod.coerce.date(),
+  "updatedAt": zod.coerce.date(),
+  "publishedAt": zod.coerce.date().nullable()
+}))
+
+
+/**
+ * @summary Sign in the configured administrator
+ */
+
+
+
+export const AdminLoginBody = zod.object({
+  "email": zod.email(),
+  "password": zod.string().min(1)
+})
+
+export const AdminLoginResponse = zod.object({
+  "email": zod.email()
+})
+
+
+/**
+ * @summary Get the current admin session
+ */
+export const GetAdminSessionResponse = zod.object({
+  "email": zod.email()
+})
+
+
+/**
+ * @summary End the admin session
+ */
+export const AdminLogoutResponse = zod.void()
+
+
+/**
+ * @summary List all news posts
+ */
+export const listAdminPostsResponseOneTitleMin = 3;
+export const listAdminPostsResponseOneTitleMax = 180;
+
+export const listAdminPostsResponseOneExcerptMax = 500;
+
+
+
+
+export const ListAdminPostsResponseItem = zod.object({
+  "title": zod.string().min(listAdminPostsResponseOneTitleMin).max(listAdminPostsResponseOneTitleMax),
+  "thumbnailUrl": zod.string().nullish(),
+  "excerpt": zod.string().max(listAdminPostsResponseOneExcerptMax),
+  "content": zod.string().min(1),
+  "status": zod.enum(['draft', 'published'])
+}).and(zod.object({
+  "id": zod.int(),
+  "slug": zod.string(),
+  "authorEmail": zod.string(),
+  "createdAt": zod.coerce.date(),
+  "updatedAt": zod.coerce.date(),
+  "publishedAt": zod.coerce.date().nullable()
+}))
+export const ListAdminPostsResponse = zod.array(ListAdminPostsResponseItem)
+
+
+/**
+ * @summary Create a news post
+ */
+export const createAdminPostBodyTitleMin = 3;
+export const createAdminPostBodyTitleMax = 180;
+
+export const createAdminPostBodyExcerptMax = 500;
+
+
+
+
+export const CreateAdminPostBody = zod.object({
+  "title": zod.string().min(createAdminPostBodyTitleMin).max(createAdminPostBodyTitleMax),
+  "thumbnailUrl": zod.string().nullish(),
+  "excerpt": zod.string().max(createAdminPostBodyExcerptMax),
+  "content": zod.string().min(1),
+  "status": zod.enum(['draft', 'published'])
+})
+
+export const createAdminPostResponseOneTitleMin = 3;
+export const createAdminPostResponseOneTitleMax = 180;
+
+export const createAdminPostResponseOneExcerptMax = 500;
+
+
+
+
+export const CreateAdminPostResponse = zod.object({
+  "title": zod.string().min(createAdminPostResponseOneTitleMin).max(createAdminPostResponseOneTitleMax),
+  "thumbnailUrl": zod.string().nullish(),
+  "excerpt": zod.string().max(createAdminPostResponseOneExcerptMax),
+  "content": zod.string().min(1),
+  "status": zod.enum(['draft', 'published'])
+}).and(zod.object({
+  "id": zod.int(),
+  "slug": zod.string(),
+  "authorEmail": zod.string(),
+  "createdAt": zod.coerce.date(),
+  "updatedAt": zod.coerce.date(),
+  "publishedAt": zod.coerce.date().nullable()
+}))
+
+
+/**
+ * @summary Update a news post
+ */
+export const UpdateAdminPostParams = zod.object({
+  "id": zod.coerce.number().int()
+})
+
+export const updateAdminPostBodyTitleMin = 3;
+export const updateAdminPostBodyTitleMax = 180;
+
+export const updateAdminPostBodyExcerptMax = 500;
+
+
+
+
+export const UpdateAdminPostBody = zod.object({
+  "title": zod.string().min(updateAdminPostBodyTitleMin).max(updateAdminPostBodyTitleMax),
+  "thumbnailUrl": zod.string().nullish(),
+  "excerpt": zod.string().max(updateAdminPostBodyExcerptMax),
+  "content": zod.string().min(1),
+  "status": zod.enum(['draft', 'published'])
+})
+
+export const updateAdminPostResponseOneTitleMin = 3;
+export const updateAdminPostResponseOneTitleMax = 180;
+
+export const updateAdminPostResponseOneExcerptMax = 500;
+
+
+
+
+export const UpdateAdminPostResponse = zod.object({
+  "title": zod.string().min(updateAdminPostResponseOneTitleMin).max(updateAdminPostResponseOneTitleMax),
+  "thumbnailUrl": zod.string().nullish(),
+  "excerpt": zod.string().max(updateAdminPostResponseOneExcerptMax),
+  "content": zod.string().min(1),
+  "status": zod.enum(['draft', 'published'])
+}).and(zod.object({
+  "id": zod.int(),
+  "slug": zod.string(),
+  "authorEmail": zod.string(),
+  "createdAt": zod.coerce.date(),
+  "updatedAt": zod.coerce.date(),
+  "publishedAt": zod.coerce.date().nullable()
+}))
+
+
+/**
+ * @summary Delete a news post
+ */
+export const DeleteAdminPostParams = zod.object({
+  "id": zod.coerce.number().int()
+})
+
+export const DeleteAdminPostResponse = zod.void()
+
+
+/**
+ * @summary Request a direct image upload URL
+ */
+export const RequestAdminUploadUrlBody = zod.object({
+  "name": zod.string(),
+  "size": zod.int(),
+  "contentType": zod.string()
+})
+
+export const RequestAdminUploadUrlResponse = zod.object({
+  "uploadURL": zod.url(),
+  "objectPath": zod.string(),
+  "metadata": zod.object({
+  "name": zod.string(),
+  "size": zod.int(),
+  "contentType": zod.string()
+})
+})
+
+

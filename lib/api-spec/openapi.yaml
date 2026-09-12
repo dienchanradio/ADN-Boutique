@@ -16,6 +16,8 @@ tags:
     description: Student authentication operations
   - name: admin
     description: Admin operations
+  - name: posts
+    description: Public news posts
 paths:
   /:
     get:
@@ -173,6 +175,174 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/AdminSummary"
+  /posts:
+    get:
+      operationId: listPublishedPosts
+      tags: [posts]
+      summary: List published news posts
+      responses:
+        "200":
+          description: Published posts
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Post"
+  /posts/{slug}:
+    get:
+      operationId: getPublishedPost
+      tags: [posts]
+      summary: Get a published news post
+      parameters:
+        - name: slug
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Published post
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Post"
+        "404":
+          description: Post not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /admin/auth/login:
+    post:
+      operationId: adminLogin
+      tags: [admin]
+      summary: Sign in the configured administrator
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AdminLoginInput"
+      responses:
+        "200":
+          description: Admin session created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AdminSession"
+        "401":
+          description: Invalid admin credentials
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /admin/auth/me:
+    get:
+      operationId: getAdminSession
+      tags: [admin]
+      summary: Get the current admin session
+      responses:
+        "200":
+          description: Current admin session
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AdminSession"
+  /admin/auth/logout:
+    post:
+      operationId: adminLogout
+      tags: [admin]
+      summary: End the admin session
+      responses:
+        "204":
+          description: Admin session ended
+  /admin/posts:
+    get:
+      operationId: listAdminPosts
+      tags: [admin]
+      summary: List all news posts
+      responses:
+        "200":
+          description: All posts
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Post"
+    post:
+      operationId: createAdminPost
+      tags: [admin]
+      summary: Create a news post
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PostInput"
+      responses:
+        "201":
+          description: Created post
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Post"
+  /admin/posts/{id}:
+    patch:
+      operationId: updateAdminPost
+      tags: [admin]
+      summary: Update a news post
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PostInput"
+      responses:
+        "200":
+          description: Updated post
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Post"
+    delete:
+      operationId: deleteAdminPost
+      tags: [admin]
+      summary: Delete a news post
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted post
+  /admin/uploads/request-url:
+    post:
+      operationId: requestAdminUploadUrl
+      tags: [admin]
+      summary: Request a direct image upload URL
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UploadInput"
+      responses:
+        "200":
+          description: Presigned upload URL
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UploadResponse"
 components:
   schemas:
     HealthStatus:
@@ -303,4 +473,82 @@ components:
         totalRevenue:
           type: integer
       required: [totalRegistrations, pendingOrders, approvedOrders, totalRevenue]
+    AdminLoginInput:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          minLength: 1
+      required: [email, password]
+    AdminSession:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+      required: [email]
+    PostInput:
+      type: object
+      properties:
+        title:
+          type: string
+          minLength: 3
+          maxLength: 180
+        thumbnailUrl:
+          type: ["string", "null"]
+        excerpt:
+          type: string
+          maxLength: 500
+        content:
+          type: string
+          minLength: 1
+        status:
+          type: string
+          enum: [draft, published]
+      required: [title, excerpt, content, status]
+    Post:
+      allOf:
+        - $ref: "#/components/schemas/PostInput"
+        - type: object
+          properties:
+            id:
+              type: integer
+            slug:
+              type: string
+            authorEmail:
+              type: string
+            createdAt:
+              type: string
+              format: date-time
+            updatedAt:
+              type: string
+              format: date-time
+            publishedAt:
+              type: ["string", "null"]
+              format: date-time
+          required: [id, slug, authorEmail, createdAt, updatedAt, publishedAt]
+    UploadInput:
+      type: object
+      properties:
+        name:
+          type: string
+        size:
+          type: integer
+        contentType:
+          type: string
+      required: [name, size, contentType]
+    UploadResponse:
+      type: object
+      properties:
+        uploadURL:
+          type: string
+          format: uri
+        objectPath:
+          type: string
+        metadata:
+          $ref: "#/components/schemas/UploadInput"
+      required: [uploadURL, objectPath, metadata]
 
