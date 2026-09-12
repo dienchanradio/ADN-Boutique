@@ -372,10 +372,19 @@ function markdownToHtml(markdown: string): string {
   }).join('');
 }
 
+function NewsArticleContent({ post }: { post: Post }) {
+  return <article className="news-article news-featured-article"><div className="news-card-date">{new Date(post.publishedAt ?? post.createdAt).toLocaleDateString('vi-VN')}</div><h1>{post.title}</h1><p className="news-article-excerpt">{post.excerpt}</p>{post.thumbnailUrl && <img className="news-article-image" src={post.thumbnailUrl} alt="" />}<div className="markdown-content" dangerouslySetInnerHTML={{ __html: markdownToHtml(post.content) }} /></article>;
+}
+
+function NewsArchiveList({ posts }: { posts: Post[] }) {
+  return <section className="news-archive" aria-labelledby="news-archive-title"><div className="eyebrow news-eyebrow">Tin tức Diện Chẩn</div><h2 id="news-archive-title" className="news-archive-title">Các bài viết trước</h2>{posts.length === 0 ? <div className="news-empty news-archive-empty">Chưa có bài viết cũ.</div> : <div className="news-grid news-old-list">{posts.map((post) => <Link className="news-card" href={`/tin-tuc/${post.slug}`} key={post.id}>{post.thumbnailUrl && <img src={post.thumbnailUrl} alt="" /> }<div className="news-card-body"><span className="news-card-date">{new Date(post.publishedAt ?? post.createdAt).toLocaleDateString('vi-VN')}</span><h3>{post.title}</h3><p>{post.excerpt}</p><span className="news-read-more">Đọc bài viết <ArrowRight size={15} /></span></div></Link>)}</div>}</section>;
+}
+
 function NewsListPage() {
   const postsQuery = useListPublishedPosts();
   const posts = postsQuery.data ?? [];
-  return <div className="news-shell"><header className="news-top"><Link className="admin-brand" href="/">Tin tức Diện Chẩn</Link><Link className="news-back" href="/">Về trang chủ</Link></header><main className="news-main"><div className="eyebrow news-eyebrow">Kiến thức & chăm sóc sức khỏe</div><h1 className="news-title">Tin tức mới nhất</h1><p className="news-intro">Những chia sẻ thực tế từ Diện Chẩn Boutique giúp bạn chủ động chăm sóc sức khỏe mỗi ngày.</p>{postsQuery.isLoading ? <div className="news-grid">{[1, 2, 3].map((item) => <div className="news-card news-skeleton" key={item} />)}</div> : postsQuery.isError ? <div className="news-empty">Không thể tải bài viết lúc này. Vui lòng thử lại sau.</div> : posts.length === 0 ? <div className="news-empty">Chưa có bài viết được xuất bản.</div> : <div className="news-grid">{posts.map((post) => <Link className="news-card" href={`/tin-tuc/${post.slug}`} key={post.id}>{post.thumbnailUrl && <img src={post.thumbnailUrl} alt="" /> }<div className="news-card-body"><span className="news-card-date">{new Date(post.publishedAt ?? post.createdAt).toLocaleDateString('vi-VN')}</span><h2>{post.title}</h2><p>{post.excerpt}</p><span className="news-read-more">Đọc bài viết <ArrowRight size={15} /></span></div></Link>)}</div>}</main></div>;
+  const latestPost = posts[0];
+  return <div className="news-shell"><header className="news-top"><Link className="admin-brand" href="/">Tin tức Diện Chẩn</Link><Link className="news-back" href="/">Về trang chủ</Link></header><main className="news-main"><div className="eyebrow news-eyebrow">Kiến thức & chăm sóc sức khỏe</div><h1 className="news-title">Tin tức mới nhất</h1><p className="news-intro">Những chia sẻ thực tế từ Diện Chẩn Boutique giúp bạn chủ động chăm sóc sức khỏe mỗi ngày.</p>{postsQuery.isLoading ? <div className="news-grid"><div className="news-card news-skeleton" /></div> : postsQuery.isError ? <div className="news-empty">Không thể tải bài viết lúc này. Vui lòng thử lại sau.</div> : posts.length === 0 ? <div className="news-empty">Chưa có bài viết được xuất bản.</div> : <><NewsArticleContent post={latestPost} /><div className="news-archive-divider" /><NewsArchiveList posts={posts.slice(1)} /></>}</main></div>;
 }
 
 function NewsPostPage() {
@@ -385,7 +394,7 @@ function NewsPostPage() {
   const post = postQuery.data;
   if (postQuery.isLoading) return <div className="news-shell"><main className="news-main news-loading">Đang tải bài viết...</main></div>;
   if (postQuery.isError || !post) return <div className="news-shell"><main className="news-main"><div className="news-empty">Không tìm thấy bài viết.</div><Link className="news-back-button" href="/tin-tuc">Quay lại Tin tức</Link></main></div>;
-  return <div className="news-shell"><header className="news-top"><Link className="admin-brand" href="/">Tin tức Diện Chẩn</Link><Link className="news-back" href="/tin-tuc">Danh sách bài viết</Link></header><main className="news-main news-article"><Link className="news-back-button" href="/tin-tuc">← Tin tức</Link><div className="news-card-date">{new Date(post.publishedAt ?? post.createdAt).toLocaleDateString('vi-VN')}</div><h1>{post.title}</h1><p className="news-article-excerpt">{post.excerpt}</p>{post.thumbnailUrl && <img className="news-article-image" src={post.thumbnailUrl} alt="" />}<div className="markdown-content" dangerouslySetInnerHTML={{ __html: markdownToHtml(post.content) }} /></main></div>;
+  return <div className="news-shell"><header className="news-top"><Link className="admin-brand" href="/">Tin tức Diện Chẩn</Link><Link className="news-back" href="/tin-tuc">Tin tức mới nhất</Link></header><main className="news-main"><Link className="news-back-button" href="/tin-tuc">← Tin tức</Link><NewsArticleContent post={post} /></main></div>;
 }
 
 function ContactPage() {
