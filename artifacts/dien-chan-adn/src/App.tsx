@@ -81,8 +81,8 @@ function Nav() {
     <div className="nav-wrap">
       <nav className="nav" aria-label="Điều hướng chính">
         <div className={`nav-links ${open ? 'open' : ''}`}>
-          <a data-testid="link-course" href="#lo-trinh" onClick={() => setOpen(false)}>Khóa học Diện Chẩn</a>
-          <Link data-testid="link-news" href="/tin-tuc" onClick={() => setOpen(false)}>Tin tức</Link>
+          <a data-testid="link-course" href="#lo-trinh" onClick={() => setOpen(false)}>Khoá Học Diện Chẩn</a>
+          <Link data-testid="link-news" href="/tin-tuc" onClick={() => setOpen(false)}>Tin Tức</Link>
           <Link data-testid="link-contact" href="/lien-he" onClick={() => setOpen(false)}>Liên Hệ</Link>
         </div>
         <button data-testid="button-mobile-menu" className="mobile-menu" onClick={() => setOpen((value) => !value)} aria-label="Mở điều hướng">
