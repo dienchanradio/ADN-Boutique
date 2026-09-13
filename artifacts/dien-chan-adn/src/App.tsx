@@ -81,8 +81,8 @@ function Nav() {
     <div className="nav-wrap">
       <nav className="nav" aria-label="Điều hướng chính">
         <div className={`nav-links ${open ? 'open' : ''}`}>
-          <a data-testid="link-course" href="#lo-trinh" onClick={() => setOpen(false)}>Khóa học Diện Chẩn</a>
-          <Link data-testid="link-news" href="/tin-tuc" onClick={() => setOpen(false)}>Tin tức</Link>
+          <a data-testid="link-course" href="#lo-trinh" onClick={() => setOpen(false)}>Khoá Học Diện Chẩn</a>
+          <Link data-testid="link-news" href="/tin-tuc" onClick={() => setOpen(false)}>Tin Tức</Link>
           <Link data-testid="link-contact" href="/lien-he" onClick={() => setOpen(false)}>Liên Hệ</Link>
         </div>
         <button data-testid="button-mobile-menu" className="mobile-menu" onClick={() => setOpen((value) => !value)} aria-label="Mở điều hướng">
@@ -106,7 +106,7 @@ function Hero() {
           <h1 id="hero-title">CHỈ VỚI 15 PHÚT <span>MỖI NGÀY</span> THÔNG THẠO NHIỀU TUYỆT CHIÊU!</h1>
           <p className="hero-lead">Giải Pháp Chăm Sóc Sức Khỏe Tự Nhiên Dành Cho Người Bận Rộn</p>
           <p className="hero-description">Khóa học như một “chìa khóa” giúp kích hoạt hệ thống tự chữa lành tự nhiên vốn đã được lập trình sẵn trong cơ thể.</p>
-          <p className="hero-description">Khóa học Online <strong>“DIỆN CHẨN KÍCH HOẠT ADN TỰ CHỮA LÀNH”.</strong> Đóng gói trọn bộ 25 bài giảng thực chiến giúp bạn khai thông ách tắc tại nhà.</p>
+          <p className="hero-description">Khóa học Online <strong>“DIỆN CHẨN KÍCH HOẠT ADN TỰ CHỮA LÀNH”.</strong> Đóng gói trọn bộ 25 bài giảng thực chiến thành video giúp bạn khai thông ách tắc tại nhà.</p>
           <div className="value-bullets">
             <div className="value-bullet"><Check size={17} /> <span>Cắt đứt nhanh chóng những triệu chứng khó chịu đeo bám dai dẳng hằng ngày.</span></div>
             <div className="value-bullet"><Check size={17} /> <span>Chuẩn hóa quy trình từng bước, dễ nhớ, dễ làm và thấy ngay kết quả.</span></div>
@@ -226,7 +226,7 @@ function Instructor() {
 function Pricing() {
   return (
     <section className="section price-section" aria-labelledby="price-title">
-      <div className="price-wrap"><SectionLabel number="07">Bảng giá</SectionLabel><h2 id="price-title" className="section-title">BẢNG GIÁ SỞ HỮU KHÓA HỌC TRỌN ĐỜI</h2><p className="light-copy">KHÔNG CÓ SỔ HỒNG VÀ CŨNG KHÔNG CÓ VIEW BIỂN NHƯNG BẠN VẪN ĐẦU TƯ ĐƯỢC DÀI LÂU CHO SỨC KHỎE VỚI CHI PHÍ CỰC THẤP</p><div className="price-card"><p className="price-note"><em>Giá đang ưu đãi tri ân học viên hiện đang cực tốt lên tới 50%, chương trình này có thể kết thúc trước thời hạn!</em></p><p className="struck">Giá niêm yết: 1.750.000 VNĐ</p><p className="price">875.000 VNĐ</p><p className="price-note"><strong>Ưu đãi độc quyền hôm nay</strong> (Học trọn đời — Toàn bộ 25 bài học + 6 Quà tặng)</p><button data-testid="button-price-register" className="cta" onClick={goToPayment} style={{ marginTop: '1.25rem' }}>ĐĂNG KÝ HỌC NGAY <ArrowRight size={16} /></button></div></div>
+      <div className="price-wrap"><SectionLabel number="07">Bảng giá</SectionLabel><h2 id="price-title" className="section-title">BẢNG GIÁ SỞ HỮU KHÓA HỌC <span style={{ color: '#b44664' }}>TRỌN ĐỜI</span></h2><p className="light-copy">KHÔNG CÓ SỔ HỒNG VÀ CŨNG KHÔNG CÓ VIEW BIỂN NHƯNG BẠN VẪN ĐẦU TƯ ĐƯỢC DÀI LÂU CHO SỨC KHỎE VỚI CHI PHÍ CỰC THẤP</p><div className="price-card"><p className="price-note"><em>Giá đang ưu đãi tri ân học viên hiện đang cực tốt lên tới 50%, chương trình này có thể kết thúc trước thời hạn!</em></p><p className="struck">Giá niêm yết: 1.750.000 VNĐ</p><p className="price">875.000 VNĐ</p><p className="price-note"><strong>Ưu đãi độc quyền hôm nay</strong> (Học trọn đời — Toàn bộ 25 bài học + 6 Quà tặng)</p><button data-testid="button-price-register" className="cta" onClick={goToPayment} style={{ marginTop: '1.25rem' }}>ĐĂNG KÝ HỌC NGAY <ArrowRight size={16} /></button></div></div>
     </section>
   );
 }
@@ -384,7 +384,7 @@ function NewsListPage() {
   const postsQuery = useListPublishedPosts();
   const posts = postsQuery.data ?? [];
   const latestPost = posts[0];
-  return <div className="news-shell"><header className="news-top"><Link className="admin-brand" href="/">Tin tức Diện Chẩn</Link><Link className="news-back" href="/">Về trang chủ</Link></header><main className="news-main"><div className="eyebrow news-eyebrow">Kiến thức & chăm sóc sức khỏe</div><h1 className="news-title">Tin tức mới nhất</h1><p className="news-intro">Những chia sẻ thực tế từ Diện Chẩn Boutique giúp bạn chủ động chăm sóc sức khỏe mỗi ngày.</p>{postsQuery.isLoading ? <div className="news-grid"><div className="news-card news-skeleton" /></div> : postsQuery.isError ? <div className="news-empty">Không thể tải bài viết lúc này. Vui lòng thử lại sau.</div> : posts.length === 0 ? <div className="news-empty">Chưa có bài viết được xuất bản.</div> : <><NewsArticleContent post={latestPost} /><div className="news-archive-divider" /><NewsArchiveList posts={posts.slice(1)} /></>}</main></div>;
+  return <div className="news-shell"><header className="news-top"><Link className="admin-brand" href="/">Trang Chủ</Link></header><main className="news-main"><div className="eyebrow news-eyebrow">Kiến thức & chăm sóc sức khỏe</div><h1 className="news-title">Tin tức mới nhất</h1><p className="news-intro">Những chia sẻ thực tế từ Diện Chẩn Boutique giúp bạn chủ động chăm sóc sức khỏe mỗi ngày.</p>{postsQuery.isLoading ? <div className="news-grid"><div className="news-card news-skeleton" /></div> : postsQuery.isError ? <div className="news-empty">Không thể tải bài viết lúc này. Vui lòng thử lại sau.</div> : posts.length === 0 ? <div className="news-empty">Chưa có bài viết được xuất bản.</div> : <><NewsArticleContent post={latestPost} /><div className="news-archive-divider" /><NewsArchiveList posts={posts.slice(1)} /></>}</main></div>;
 }
 
 function NewsPostPage() {
@@ -398,7 +398,7 @@ function NewsPostPage() {
 }
 
 function ContactPage() {
-  return <div className="contact-page"><header className="contact-top"><Link className="contact-back" href="/">← Về trang chủ</Link></header><main className="contact-main"><section className="contact-card" aria-labelledby="contact-title"><div className="contact-copy"><div className="eyebrow contact-eyebrow">DIỆN CHẨN BOUTIQUE</div><h1 id="contact-title">DIỆN CHẨN KÍCH HOẠT ADN<br />TỰ CHỮA LÀNH</h1><p className="contact-tagline">Học đúng phương pháp – Thực hành đúng cách.</p><div className="contact-info"><a href="tel:0919994282"><span className="contact-icon" aria-hidden="true">⌕</span><span><small>Hotline / Zalo</small><strong>091.999.4282</strong></span></a><a href="mailto:dienchanboutique@gmail.com"><span className="contact-icon" aria-hidden="true">✉</span><span><small>Email</small><strong>dienchanboutique@gmail.com</strong></span></a><a href="https://www.khoahocdienchan.com" target="_blank" rel="noreferrer"><span className="contact-icon" aria-hidden="true">◎</span><span><small>Website</small><strong>www.khoahocdienchan.com</strong></span></a></div><div className="contact-rule" /><p className="contact-copyright">Copyright 2026 Bản quyền thuộc về Nguyễn Minh Đạt. All rights reserved.</p></div><div className="contact-illustration" aria-hidden="true"><div className="contact-orbit contact-orbit-large" /><div className="contact-orbit contact-orbit-small" /></div></section></main></div>;
+  return <div className="contact-page"><header className="contact-top"><Link className="contact-back" href="/">Trang Chủ</Link></header><main className="contact-main"><section className="contact-card" aria-labelledby="contact-title"><div className="contact-copy"><h1 id="contact-title">DIỆN CHẨN KÍCH HOẠT ADN<br />TỰ CHỮA LÀNH</h1><p className="contact-tagline">Học đúng phương pháp – Thực hành đúng cách.</p><div className="contact-info"><a href="tel:0919994282"><span className="contact-icon" aria-hidden="true">⌕</span><span><small>Hotline / Zalo</small><strong>091.999.4282</strong></span></a><a href="mailto:dienchanboutique@gmail.com"><span className="contact-icon" aria-hidden="true">✉</span><span><small>Email</small><strong>dienchanboutique@gmail.com</strong></span></a><a href="https://www.khoahocdienchan.com" target="_blank" rel="noreferrer"><span className="contact-icon" aria-hidden="true">◎</span><span><small>Website</small><strong>www.khoahocdienchan.com</strong></span></a></div><div className="contact-rule" /><p className="contact-copyright">Copyright 2026 Bản quyền thuộc về Nguyễn Minh Đạt. All rights reserved.</p></div><div className="contact-illustration" aria-hidden="true"><div className="contact-orbit contact-orbit-large" /><div className="contact-orbit contact-orbit-small" /></div></section></main></div>;
 }
 
 function Footer() {

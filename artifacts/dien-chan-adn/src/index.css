@@ -78,7 +78,6 @@ img { display: block; max-width: 100%; }
 .teacher-name {
   color: #ead292;
   text-shadow: 0 0 22px rgba(234,210,146,.22);
-  background: linear-gradient(transparent 72%, rgba(207,92,120,.28) 72%);
 }
 .body-copy { color: #ede6d6; font-size: 1.04rem; line-height: 1.75; }
 .light-copy { color: #426178; font-size: 1.04rem; line-height: 1.75; }
