@@ -97,11 +97,46 @@ function SectionLabel(_props: { number: string; children: string }) {
   return null;
 }
 
+function useScrollReveal<T extends HTMLElement>() {
+  const ref = useRef<T>(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const element = ref.current;
+    if (!element) return;
+
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) {
+      setIsVisible(true);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.unobserve(entry.target);
+        }
+      },
+      { threshold: 0.12, rootMargin: '0px 0px -8% 0px' },
+    );
+
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, []);
+
+  return { ref, isVisible };
+}
+
 function Hero() {
+  const introReveal = useScrollReveal<HTMLDivElement>();
+  const actionsReveal = useScrollReveal<HTMLDivElement>();
+  const trustReveal = useScrollReveal<HTMLDivElement>();
+  const collageReveal = useScrollReveal<HTMLDivElement>();
+
   return (
     <section className="hero" aria-labelledby="hero-title">
       <div className="hero-grid">
-        <div className="reveal">
+        <div ref={introReveal.ref} className={`scroll-reveal${introReveal.isVisible ? ' is-visible' : ''}`}>
           <div className="eyebrow">KHÓA HỌC DIỆN CHẨN ONLINE</div>
           <h1 id="hero-title">CHỈ VỚI 15 PHÚT <span>MỖI NGÀY</span> THÔNG THẠO NHIỀU TUYỆT CHIÊU!</h1>
           <p className="hero-lead">Giải Pháp Chăm Sóc Sức Khỏe Tự Nhiên Dành Cho Người Bận Rộn</p>
@@ -113,17 +148,17 @@ function Hero() {
             <div className="value-bullet"><Check size={17} /> <span>Sở hữu kỹ năng chăm sóc sức khỏe chủ động trọn đời cho bản thân, cha mẹ và con cái.</span></div>
             <div className="value-bullet"><Check size={17} /> <span>ƯU ĐÃI CỰC TỐT KHI THAM GIA</span></div>
           </div>
-          <div className="hero-actions">
+          <div ref={actionsReveal.ref} className={`hero-actions scroll-reveal${actionsReveal.isVisible ? ' is-visible' : ''}`}>
             <button data-testid="button-hero-register" className="cta" onClick={goToPayment}>ĐĂNG KÝ HỌC NGAY <ArrowRight size={16} /></button>
             <a data-testid="link-hero-outline" className="ghost-btn" href="#lo-trinh">XEM LỘ TRÌNH</a>
           </div>
-          <div className="trust-row">
+          <div ref={trustReveal.ref} className={`trust-row scroll-reveal${trustReveal.isVisible ? ' is-visible' : ''}`}>
             <div><strong>11+</strong> Năm Kinh Nghiệm</div>
             <div><strong>500+</strong> Học Viên Đào Tạo Trực Tiếp</div>
             <div><strong>1.000+</strong> Ca Phục Hồi</div>
           </div>
         </div>
-        <div className="hero-collage reveal" aria-label="Hình ảnh lớp học Diện Chẩn">
+        <div ref={collageReveal.ref} className={`hero-collage scroll-reveal${collageReveal.isVisible ? ' is-visible' : ''}`} aria-label="Hình ảnh lớp học Diện Chẩn">
           <img className="hero-image-main" src={assets.hero} alt="Nguyễn Minh Đạt chia sẻ trong lớp học" />
           <img className="hero-image-small" src={assets.classOne} alt="Học viên thực hành Diện Chẩn" />
           <img className="hero-image-third" src={assets.classTwo} alt="Học viên học cùng giảng viên" />

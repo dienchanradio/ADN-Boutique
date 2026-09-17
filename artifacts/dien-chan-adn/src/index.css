@@ -569,8 +569,15 @@ img { display: block; max-width: 100%; }
 .contact-orbit-small { width: 270px; height: 470px; border-color: rgba(207,92,120,.35); transform: rotate(34deg); }
 .empty-state, .error-state { padding: 3rem 1rem; text-align: center; color: #426178; }
 .skeleton { height: 1rem; border-radius: .4rem; background: linear-gradient(90deg, #204b66, #426178, #204b66); background-size: 200% 100%; animation: shimmer 1.5s infinite; }
-.reveal { animation: reveal .7s both; }
-@keyframes reveal { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
+.scroll-reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity .75s ease, transform .75s cubic-bezier(.22, 1, .36, 1);
+}
+.scroll-reveal.is-visible { opacity: 1; transform: translateY(0); }
+.hero-actions.scroll-reveal { transition-delay: .08s; }
+.trust-row.scroll-reveal { transition-delay: .16s; }
+.hero-collage.scroll-reveal { transition-delay: .1s; }
 @keyframes shimmer { from { background-position: 200% 0; } to { background-position: -200% 0; } }
 
 @media (max-width: 880px) {
@@ -621,5 +628,6 @@ img { display: block; max-width: 100%; }
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .scroll-reveal { opacity: 1; transform: none; transition: none; }
   .course-portrait img { transition: none; }
 }
