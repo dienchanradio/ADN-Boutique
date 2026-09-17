@@ -602,6 +602,10 @@ img { display: block; max-width: 100%; }
 .gift.scroll-reveal { transition: opacity .75s ease, transform .75s cubic-bezier(.22, 1, .36, 1), box-shadow .25s ease; }
 @keyframes shimmer { from { background-position: 200% 0; } to { background-position: -200% 0; } }
 
+@media (min-width: 881px) {
+  .hero h1 { text-wrap: balance; }
+}
+
 @media (max-width: 880px) {
   .section { padding-inline: clamp(1.25rem, 4vw, 3rem); }
   .nav-links { gap: 1rem; }
