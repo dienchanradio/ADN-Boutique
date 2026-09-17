@@ -11,6 +11,7 @@ import {
   ClipboardPenLine,
   FileCheck2,
   Headset,
+  HandHeart,
   HeartPulse,
   ImagePlus,
   Infinity,
@@ -25,6 +26,8 @@ import {
   ScanFace,
   ShieldCheck,
   Sparkles,
+  Telescope,
+  Timer,
   UserRound,
   X,
 } from 'lucide-react';
@@ -270,11 +273,22 @@ function Outcomes() {
 
 function Audience() {
   const items = ['Muốn giải quyết trọn bộ triệu chứng khó chịu từ nữa thân người trên như: cổ vai gáy, tiền đình, đốt sống cổ, viêm xoang...', 'Tiết kiệm thời gian và không muốn dùng thuốc, muốn chủ động tự chăm sóc bản thân chỉ với 10-15 phút thực hành mỗi ngày.', 'Học một kỹ năng thực chiến không chỉ giúp ích cho bản thân mà còn chủ động hỗ trợ những người thân yêu (ông bà, cha mẹ, bạn bè...).', 'Thỏa mãn đam mê khám phá kiến thức mới mẻ, hiện đại, tự kích hoạt khả năng tự chữa lành tự nhiên, là một “món ăn tinh thần” hoàn toàn mới lạ, khoa học nhưng gần gũi, giúp mở rộng tư duy về chăm sóc sức khỏe toàn diện.'];
+  const audienceIcons = [HeartPulse, Timer, HandHeart, Telescope];
   return (
     <section className="section section-tint" aria-labelledby="audience-title">
       <SectionLabel number="04">Đối tượng phù hợp</SectionLabel>
       <h2 id="audience-title" className="section-title">MÀ TÓM LẠI... <em>AI SẼ CẦN</em> KHÓA HỌC NÀY!</h2>
-      <div className="audience-grid" style={{ marginTop: '3rem' }}>{items.map((item, index) => <article className="audience-card" key={item}><span className="audience-number" aria-label={`Khu vực ${index + 1}`}>0{index + 1}</span><p data-testid={`text-audience-${index + 1}`}>{item}</p></article>)}</div>
+      <div className="audience-grid" style={{ marginTop: '3rem' }}>
+        {items.map((item, index) => {
+          const Icon = audienceIcons[index];
+          return (
+            <article className="audience-card" key={item}>
+              <span className="audience-illustration" aria-hidden="true"><Icon size={30} strokeWidth={1.6} /></span>
+              <p data-testid={`text-audience-${index + 1}`}>{item}</p>
+            </article>
+          );
+        })}
+      </div>
     </section>
   );
 }
