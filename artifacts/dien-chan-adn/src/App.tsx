@@ -150,6 +150,20 @@ function TrustStat({ value, label, delay }: { value: string; label: string; dela
   );
 }
 
+function HeroBenefit({ children, index }: { children: string; index: number }) {
+  const reveal = useScrollReveal<HTMLDivElement>();
+
+  return (
+    <div
+      ref={reveal.ref}
+      className={`value-bullet scroll-reveal${reveal.isVisible ? ' is-visible' : ''}`}
+      style={{ transitionDelay: `${index * 0.08}s` }}
+    >
+      <Check size={17} /> <span>{children}</span>
+    </div>
+  );
+}
+
 function Hero() {
   const introReveal = useScrollReveal<HTMLDivElement>();
   const actionsReveal = useScrollReveal<HTMLDivElement>();
@@ -165,10 +179,10 @@ function Hero() {
           <p className="hero-description">Khóa học như một “chìa khóa” giúp kích hoạt hệ thống tự chữa lành tự nhiên vốn đã được lập trình sẵn trong cơ thể.</p>
           <p className="hero-description">Khóa học Online <strong>“DIỆN CHẨN KÍCH HOẠT ADN TỰ CHỮA LÀNH”.</strong> Đóng gói trọn bộ 25 bài giảng thực chiến thành video giúp bạn khai thông ách tắc tại nhà.</p>
           <div className="value-bullets">
-            <div className="value-bullet"><Check size={17} /> <span>Cắt đứt nhanh chóng những triệu chứng khó chịu đeo bám dai dẳng hằng ngày.</span></div>
-            <div className="value-bullet"><Check size={17} /> <span>Chuẩn hóa quy trình từng bước, dễ nhớ, dễ làm và thấy ngay kết quả.</span></div>
-            <div className="value-bullet"><Check size={17} /> <span>Sở hữu kỹ năng chăm sóc sức khỏe chủ động trọn đời cho bản thân, cha mẹ và con cái.</span></div>
-            <div className="value-bullet"><Check size={17} /> <span>ƯU ĐÃI CỰC TỐT KHI THAM GIA</span></div>
+            <HeroBenefit index={0}>Cắt đứt nhanh chóng những triệu chứng khó chịu đeo bám dai dẳng hằng ngày.</HeroBenefit>
+            <HeroBenefit index={1}>Chuẩn hóa quy trình từng bước, dễ nhớ, dễ làm và thấy ngay kết quả.</HeroBenefit>
+            <HeroBenefit index={2}>Sở hữu kỹ năng chăm sóc sức khỏe chủ động trọn đời cho bản thân, cha mẹ và con cái.</HeroBenefit>
+            <HeroBenefit index={3}>ƯU ĐÃI CỰC TỐT KHI THAM GIA</HeroBenefit>
           </div>
           <div ref={actionsReveal.ref} className={`hero-actions scroll-reveal${actionsReveal.isVisible ? ' is-visible' : ''}`}>
             <button data-testid="button-hero-register" className="cta" onClick={goToPayment}>ĐĂNG KÝ HỌC NGAY <ArrowRight size={16} /></button>
