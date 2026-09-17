@@ -127,10 +127,23 @@ function useScrollReveal<T extends HTMLElement>() {
   return { ref, isVisible };
 }
 
+function TrustStat({ value, label, delay }: { value: string; label: string; delay: string }) {
+  const reveal = useScrollReveal<HTMLDivElement>();
+
+  return (
+    <div
+      ref={reveal.ref}
+      className={`scroll-reveal${reveal.isVisible ? ' is-visible' : ''}`}
+      style={{ transitionDelay: delay }}
+    >
+      <strong>{value}</strong> {label}
+    </div>
+  );
+}
+
 function Hero() {
   const introReveal = useScrollReveal<HTMLDivElement>();
   const actionsReveal = useScrollReveal<HTMLDivElement>();
-  const trustReveal = useScrollReveal<HTMLDivElement>();
   const collageReveal = useScrollReveal<HTMLDivElement>();
 
   return (
@@ -152,10 +165,10 @@ function Hero() {
             <button data-testid="button-hero-register" className="cta" onClick={goToPayment}>ĐĂNG KÝ HỌC NGAY <ArrowRight size={16} /></button>
             <a data-testid="link-hero-outline" className="ghost-btn" href="#lo-trinh">XEM LỘ TRÌNH</a>
           </div>
-          <div ref={trustReveal.ref} className={`trust-row scroll-reveal${trustReveal.isVisible ? ' is-visible' : ''}`}>
-            <div><strong>11+</strong> Năm Kinh Nghiệm</div>
-            <div><strong>500+</strong> Học Viên Đào Tạo Trực Tiếp</div>
-            <div><strong>1.000+</strong> Ca Phục Hồi</div>
+          <div className="trust-row">
+            <TrustStat value="11+" label="Năm Kinh Nghiệm" delay="0s" />
+            <TrustStat value="500+" label="Học Viên Đào Tạo Trực Tiếp" delay=".12s" />
+            <TrustStat value="1.000+" label="Ca Phục Hồi" delay=".24s" />
           </div>
         </div>
         <div ref={collageReveal.ref} className={`hero-collage scroll-reveal${collageReveal.isVisible ? ' is-visible' : ''}`} aria-label="Hình ảnh lớp học Diện Chẩn">
