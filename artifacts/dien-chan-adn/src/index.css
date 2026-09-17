@@ -138,6 +138,7 @@ img { display: block; max-width: 100%; }
   flex: 1;
   min-width: 0;
   padding: .8rem .55rem;
+  text-align: center;
   border: 1px solid transparent;
   border-radius: .75rem;
   background: linear-gradient(#0b3451, #0b3451) padding-box,
