@@ -261,7 +261,18 @@ img { display: block; max-width: 100%; }
   border-radius: 19px 23px 19px 23px; transform: rotate(8deg);
 }
 .gift-icon svg { transform: rotate(4deg); filter: drop-shadow(0 2px 2px rgba(113,53,32,.22)); }
-.gift p { position: relative; z-index: 1; margin: .15rem 0 0; line-height: 1.45; font-size: .9rem; color: #713520; }
+.gift p {
+  position: relative;
+  z-index: 1;
+  margin: .15rem 0 0;
+  color: #713520;
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.38;
+  letter-spacing: -.01em;
+  text-wrap: balance;
+}
 .instructor-layout { display: grid; grid-template-columns: .83fr 1.17fr; gap: 4rem; align-items: start; }
 .instructor-photos { display: grid; grid-template-columns: repeat(2,1fr); gap: .7rem; }
 .instructor-photos img {
