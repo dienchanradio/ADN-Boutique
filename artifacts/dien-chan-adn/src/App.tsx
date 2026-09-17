@@ -4,14 +4,17 @@ import {
   ArrowRight,
   BadgeCheck,
   BookOpenText,
+  Brain,
   Check,
   ChevronDown,
   ClipboardCheck,
   ClipboardPenLine,
   FileCheck2,
   Headset,
+  HeartPulse,
   ImagePlus,
   Infinity,
+  Leaf,
   LockKeyhole,
   Map,
   Menu,
@@ -19,10 +22,13 @@ import {
   Play,
   QrCode,
   RefreshCcw,
+  ScanFace,
+  ShieldCheck,
   Sparkles,
   UserRound,
   X,
 } from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 import {
   getGetAdminSummaryQueryKey,
   getListAdminOrdersQueryKey,
@@ -230,13 +236,33 @@ function LearningPath() {
   );
 }
 
+function OutcomeCard({ item, index, Icon }: { item: string; index: number; Icon: LucideIcon }) {
+  const reveal = useScrollReveal<HTMLDivElement>();
+
+  return (
+    <div
+      ref={reveal.ref}
+      className={`outcome scroll-reveal${reveal.isVisible ? ' is-visible' : ''}`}
+      style={{ transitionDelay: `${index * 0.1}s` }}
+    >
+      <div className="outcome-icon" aria-hidden="true">
+        <Icon size={21} strokeWidth={1.8} />
+        <span className="outcome-icon-dot outcome-icon-dot-one" />
+        <span className="outcome-icon-dot outcome-icon-dot-two" />
+      </div>
+      <p data-testid={`text-outcome-${index + 1}`}>{item}</p>
+    </div>
+  );
+}
+
 function Outcomes() {
   const items = ['Có khả năng tự nhận biết, đọc hiểu các dấu hiệu bất thường trên mặt và cơ thể để dự phòng bệnh tật, chăm sóc bản thân một cách an toàn và tiết kiệm.', 'Thành thạo các thao tác khai thông khí huyết và các phác đồ xử lý triệu chứng.', 'Xây dựng lối sống lành mạnh, chủ động giúp dân văn phòng và freelancer cân bằng lại nhịp sống bận rộn, giảm stress áp lực công việc.', 'Hiểu rõ mối liên hệ giữa các phản chiếu trên gương mặt với cơ quan nội tạng bên trong cơ thể.', 'Sở hữu một “kỹ năng sinh tồn” thời đại số, trang bị thêm một năng lực tự chủ về sức khỏe nâng cao hiệu suất làm việc mỗi ngày.'];
+  const outcomeIcons = [ScanFace, HeartPulse, Leaf, Brain, ShieldCheck];
   return (
     <section className="section" aria-labelledby="outcome-title">
       <div className="outcome-grid">
         <div><SectionLabel number="03">Kết quả sau khóa học</SectionLabel><h2 id="outcome-title" className="section-title">SAU KHÓA HỌC THÌ <em>BẠN SẼ:</em></h2></div>
-        <div className="outcomes">{items.map((item, index) => <div className="outcome" key={item}><div className="outcome-icon" aria-hidden="true"><Sparkles size={21} strokeWidth={1.8} /><span className="outcome-icon-dot outcome-icon-dot-one" /><span className="outcome-icon-dot outcome-icon-dot-two" /></div><p data-testid={`text-outcome-${index + 1}`}>{item}</p></div>)}</div>
+        <div className="outcomes">{items.map((item, index) => <OutcomeCard key={item} item={item} index={index} Icon={outcomeIcons[index]} />)}</div>
       </div>
     </section>
   );
