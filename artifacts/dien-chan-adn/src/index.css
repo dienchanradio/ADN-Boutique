@@ -172,14 +172,14 @@ img { display: block; max-width: 100%; }
 .outcome-grid { display: grid; grid-template-columns: 1fr 1.5fr; gap: 5rem; }
 .outcomes { display: grid; gap: 1rem; }
 .outcome-portrait { display: flex; justify-content: center; margin-top: 2rem; padding: .5rem 0; }
-.outcome-portrait img { display: block; width: auto; height: clamp(300px, 32vw, 410px); max-width: 100%; object-fit: contain; animation: outcome-float 6s ease-in-out infinite; }
+.outcome-portrait img { display: block; width: auto; height: clamp(480px, 46vw, 660px); max-width: 100%; object-fit: contain; animation: outcome-float 6s ease-in-out infinite; }
 @keyframes outcome-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
 @media (max-width: 880px) {
   .outcome-portrait { margin-top: 1.5rem; }
-  .outcome-portrait img { height: 300px; }
+  .outcome-portrait img { height: 500px; }
 }
 @media (max-width: 620px) {
-  .outcome-portrait img { height: 260px; }
+  .outcome-portrait img { height: 420px; }
 }
 @media (prefers-reduced-motion: reduce) {
   .outcome-portrait img { animation: none; }
