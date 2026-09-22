@@ -278,7 +278,7 @@ function Outcomes() {
   return (
     <section className="section" aria-labelledby="outcome-title">
       <div className="outcome-grid">
-        <div><SectionLabel number="03">Kết quả sau khóa học</SectionLabel><h2 id="outcome-title" className="section-title">SAU KHÓA HỌC THÌ <em>BẠN SẼ:</em></h2></div>
+        <div><SectionLabel number="03">Kết quả sau khóa học</SectionLabel><h2 id="outcome-title" className="section-title">SAU KHÓA HỌC THÌ <em>BẠN SẼ:</em></h2><div className="outcome-portrait"><img src={`${import.meta.env.BASE_URL}assets/outcomes-character.png`} alt="Giảng viên chia sẻ kiến thức Diện Chẩn" width={369} height={694} loading="lazy" /></div></div>
         <div className="outcomes">{items.map((item, index) => <OutcomeCard key={item} item={item} index={index} Icon={outcomeIcons[index]} />)}</div>
       </div>
     </section>

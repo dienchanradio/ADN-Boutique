@@ -171,6 +171,19 @@ img { display: block; max-width: 100%; }
 .course-portrait.chapter-active-3 img { transform: translate3d(0, -21%, 0); }
 .outcome-grid { display: grid; grid-template-columns: 1fr 1.5fr; gap: 5rem; }
 .outcomes { display: grid; gap: 1rem; }
+.outcome-portrait { display: flex; justify-content: center; margin-top: 2rem; padding: .5rem 0; }
+.outcome-portrait img { display: block; width: auto; height: clamp(300px, 32vw, 410px); max-width: 100%; object-fit: contain; animation: outcome-float 6s ease-in-out infinite; }
+@keyframes outcome-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+@media (max-width: 880px) {
+  .outcome-portrait { margin-top: 1.5rem; }
+  .outcome-portrait img { height: 300px; }
+}
+@media (max-width: 620px) {
+  .outcome-portrait img { height: 260px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .outcome-portrait img { animation: none; }
+}
 .outcome { display: grid; grid-template-columns: 52px 1fr; gap: 1rem; align-items: start; padding: 1.25rem; border: 1px solid rgba(234,210,146,.25); border-radius: 1.1rem; background: rgba(255,255,255,.035); }
 .outcome-icon {
   position: relative; isolation: isolate; width: 46px; height: 46px; display: grid; place-items: center;
