@@ -123,8 +123,8 @@ img { display: block; max-width: 100%; }
 }
 .ghost-btn:hover { border-color: #ead292; background: rgba(234,210,146,.16); transform: translateY(-2px); }
 .hero-collage {
-  position: relative; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: clamp(.65rem, 1.35vw, 1rem); width: 100%; max-width: 560px; justify-self: end;
+  position: relative; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(.75rem, 1.5vw, 1.15rem); width: 100%; max-width: 620px; justify-self: end;
 }
 .hero-collage img {
   width: 100%; aspect-ratio: 4 / 5; object-fit: cover; object-position: center;
@@ -657,9 +657,8 @@ img { display: block; max-width: 100%; }
   .mobile-menu { display: grid; place-items: center; }
   .hero { padding-top: 7.25rem; padding-bottom: 4rem; }
   .hero h1 { max-width: 100%; font-size: clamp(2.65rem, 12.5vw, 4.6rem); line-height: .94; }
-  .hero-collage { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .7rem; }
-  .hero-collage img { aspect-ratio: 1 / 1.12; border-radius: 1rem; }
-  .hero-collage img:last-child { grid-column: 1 / -1; width: calc(50% - .35rem); justify-self: center; }
+  .hero-collage { gap: .7rem; }
+  .hero-collage img { aspect-ratio: 4 / 5; border-radius: 1rem; }
   .section-title { max-width: 100%; font-size: clamp(2rem, 9.5vw, 3.3rem); }
   .section-head { margin-bottom: 2rem; }
   .trust-row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .7rem; }

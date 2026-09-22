@@ -69,6 +69,7 @@ const assets = {
   hero: '/assets/Section_1a_1787988875343.png',
   classOne: '/assets/Section_1b_1787988875344.jpg',
   classTwo: '/assets/Section_1c_1787988875344.jpg',
+  classThree: '/assets/Section_1d_new.jpg',
   teacher: '/assets/Section_2_character_no_bg.png',
   groupOne: '/assets/Section_6a_1787988875345.png',
   groupTwo: '/assets/Section_6b_1787988875346.jpg',
@@ -198,6 +199,7 @@ function Hero() {
           <img className="hero-image-main" src={assets.hero} alt="Nguyễn Minh Đạt chia sẻ trong lớp học" />
           <img className="hero-image-small" src={assets.classOne} alt="Học viên thực hành Diện Chẩn" />
           <img className="hero-image-third" src={assets.classTwo} alt="Học viên học cùng giảng viên" />
+          <img className="hero-image-fourth" src={assets.classThree} alt="Nguyễn Minh Đạt cùng học viên trong buổi thực hành" />
         </div>
       </div>
     </section>
