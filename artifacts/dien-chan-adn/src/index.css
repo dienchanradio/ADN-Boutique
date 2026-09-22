@@ -630,7 +630,7 @@ img { display: block; max-width: 100%; }
 
 @media (min-width: 881px) {
   .hero h1 { text-wrap: balance; }
-  .hero-collage { width: calc(100% + 2rem); max-width: 660px; margin-right: -2rem; }
+  .hero-collage { width: calc(100% + 2rem); max-width: 660px; margin-right: 0; }
 }
 
 @media (max-width: 880px) {
