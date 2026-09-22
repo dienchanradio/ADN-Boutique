@@ -61,6 +61,7 @@ import { ErrorBoundary } from '@/components/error-boundary';
 import NotFound from '@/pages/not-found';
 import type { ReactNode } from 'react';
 import './index.css';
+import { BonusGift } from './components/bonus-gift';
 
 const queryClient = new QueryClient();
 
@@ -334,6 +335,7 @@ function Bonus() {
   const giftIcons = [Headset, MonitorPlay, BookOpenText, Infinity, ClipboardCheck, Map];
   return (
     <section className="section bonus" aria-labelledby="bonus-title">
+      <BonusGift />
       <div className="bonus-grid"><div><SectionLabel number="05">Bonus</SectionLabel><h2 id="bonus-title" className="section-title">BỘ 6 MÓN QUÀ <em>ĐỘC QUYỀN</em> KHI ĐĂNG KÝ!</h2><button data-testid="button-bonus-register" className="cta" onClick={goToPayment} style={{ marginTop: '2rem' }}>ĐĂNG KÝ HỌC NGAY <ArrowRight size={16} /></button></div><div className="gift-grid">{items.map((item, index) => <GiftCard key={item} item={item} index={index} Icon={giftIcons[index]} />)}</div></div>
     </section>
   );

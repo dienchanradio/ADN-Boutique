@@ -1,0 +1,61 @@
+.bonus-floater {
+  --gift-bottom-space: 100px;
+  z-index: 8;
+  width: 66px;
+}
+.bonus-floater-link {
+  display: block;
+  width: 100%;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  cursor: pointer;
+  border-radius: 12px;
+  filter: drop-shadow(0 5px 8px rgb(113 53 32 / 18%));
+}
+.bonus-floater-link img { width: 100%; height: auto; border-radius: 10px; }
+.bonus-floater-link:focus-visible { outline: 3px solid #012c4e; outline-offset: 4px; }
+.bonus-floater-roaming {
+  position: absolute;
+  animation: bonus-gift-roam 18s ease-in-out -2s infinite;
+}
+.bonus-floater-roaming:hover,
+.bonus-floater-roaming:focus-within { animation-play-state: paused; opacity: 1 !important; }
+.bonus-floater-docked {
+  position: fixed;
+  width: 48px;
+  right: max(14px, env(safe-area-inset-right));
+  bottom: max(18px, env(safe-area-inset-bottom));
+}
+.bonus-floater-close {
+  position: absolute;
+  right: -8px;
+  top: -16px;
+  width: 28px;
+  height: 28px;
+  border: 1px solid #cf5c78;
+  border-radius: 50%;
+  color: #012c4e;
+  background: #fdfbf7;
+  cursor: pointer;
+}
+/* Relocate while invisible, only drifting in the section's empty padding. */
+@keyframes bonus-gift-roam {
+  0%, 3% { left: 7%; top: 6px; opacity: 0; transform: translateY(5px) rotate(-5deg); }
+  9%, 24% { left: 10%; top: 6px; opacity: 1; transform: translateY(0) rotate(4deg); }
+  30% { left: 12%; top: 6px; opacity: 0; }
+  31% { left: calc(88% - 66px); top: calc(100% - var(--gift-bottom-space)); opacity: 0; }
+  38%, 55% { left: calc(84% - 66px); top: calc(100% - var(--gift-bottom-space)); opacity: 1; transform: translateY(-3px) rotate(-4deg); }
+  61% { left: calc(82% - 66px); top: calc(100% - var(--gift-bottom-space)); opacity: 0; }
+  62% { left: calc(85% - 66px); top: 6px; opacity: 0; }
+  69%, 88% { left: calc(80% - 66px); top: 6px; opacity: 1; transform: translateY(0) rotate(4deg); }
+  95%, 100% { left: calc(78% - 66px); top: 6px; opacity: 0; }
+}
+@media (max-width: 620px) {
+  .bonus-floater-roaming { width: 44px; --gift-bottom-space: 66px; }
+  .bonus-floater-docked { width: 44px; }
+  /* Bottom path stays inside the existing 72px section padding. */
+}
+@media (prefers-reduced-motion: reduce) {
+  .bonus-floater-roaming { animation: none; top: 6px; right: 20px; }
+}
