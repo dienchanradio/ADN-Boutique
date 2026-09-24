@@ -94,7 +94,7 @@ router.post("/registrations", async (req, res): Promise<void> => {
     return;
   }
 
-  try {
+  /*try {
     const sheetResponse = await appendRegistrationToSheet(
       parsed.data.fullName,
       parsed.data.phone,
@@ -115,7 +115,7 @@ router.post("/registrations", async (req, res): Promise<void> => {
     res.status(502).json({ error: "Không thể kết nối Google Sheet lúc này. Vui lòng thử lại sau." });
     return;
   }
-
+*/
   const [registration] = await db
     .insert(courseRegistrationsTable)
     .values({
