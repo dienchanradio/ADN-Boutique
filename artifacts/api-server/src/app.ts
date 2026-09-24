@@ -60,7 +60,7 @@ const frontendPath = path.join(process.cwd(), "artifacts/dien-chan-adn/dist/publ
 app.use(express.static(frontendPath));
 
 // Bắt mọi đường link (ngoại trừ /api) và trả về giao diện web
-app.get("*", (req, res) => {
+app.get(/.*/, (req, res) => {
   res.sendFile(path.join(frontendPath, "index.html"));
 });
 export default app;
