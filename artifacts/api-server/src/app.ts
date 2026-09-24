@@ -1,3 +1,4 @@
+import path from "path";
 import express, { type Express } from "express";
 import cors from "cors";
 import pinoHttp from "pino-http";
@@ -36,9 +37,6 @@ app.use(
 // Publish may probe the process root even when the artifact startup health path
 // is configured as /api/healthz. Keep this endpoint independent of auth and
 // external services so a healthy process always returns HTTP 200.
-app.get("/", (_req, res) => {
-  res.status(200).json({ status: "ok" });
-});
 
 app.use(CLERK_PROXY_PATH, clerkProxyMiddleware());
 app.use(cors());
@@ -54,5 +52,15 @@ app.use(
 );
 
 app.use("/api", router);
+// Cấu hình đường dẫn tới thư mục Frontend vừa build
+// (Nếu Vite của bạn xuất file ra thư mục public, hãy thêm "/public" vào sau "dist")
+const frontendPath = path.join(process.cwd(), "artifacts/dien-chan-adn/dist/public");
 
+// Phục vụ các file tĩnh (CSS, JS, Hình ảnh...)
+app.use(express.static(frontendPath));
+
+// Bắt mọi đường link (ngoại trừ /api) và trả về giao diện web
+app.get("*", (req, res) => {
+  res.sendFile(path.join(frontendPath, "index.html"));
+});
 export default app;
