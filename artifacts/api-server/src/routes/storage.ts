@@ -56,7 +56,7 @@ router.put("/admin/uploads/execute/:id", requireAdmin, (req, res): void => {
 });
 
 // 4. Khi bài viết muốn hiển thị ảnh -> Chuyển hướng người xem về link ảnh xịn của Cloudinary
-router.get("/storage/objects/*path", (req, res): void => {
+router.get("/storage/*path", (req, res): void => {
   const rawPath = req.params.path;
   const imageId = Array.isArray(rawPath) ? rawPath.join("/") : rawPath;
   const cleanId = imageId.replace(/^\//, ''); // Xóa dấu gạch chéo dư thừa
