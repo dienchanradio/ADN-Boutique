@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { QrCode, X } from 'lucide-react';
+import { X } from 'lucide-react';
 import { SiZalo } from 'react-icons/si';
 import './zalo-contact.css';
 
@@ -45,9 +45,6 @@ export function ZaloContactWidget() {
             title="Kết bạn Zalo"
           >
             <SiZalo size={36} aria-hidden="true" />
-            <span className="zalo-floater-qr" aria-hidden="true">
-              <QrCode size={17} />
-            </span>
           </button>
           {!visible && (
             <button
