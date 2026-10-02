@@ -45,8 +45,7 @@ export function ZaloContactWidget() {
             aria-label="Mở Zalo để kết bạn và trò chuyện"
             title="Kết bạn Zalo"
           >
-            <SiZalo size={31} aria-hidden="true" />
-            <span>Zalo</span>
+            <SiZalo size={36} aria-hidden="true" />
           </a>
           <button
             type="button"
