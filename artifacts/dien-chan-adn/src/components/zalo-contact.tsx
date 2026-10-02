@@ -37,24 +37,17 @@ export function ZaloContactWidget() {
       <span ref={marker} aria-hidden="true" />
       {seen && (visible || !dismissed) && (
         <div className={`zalo-floater ${visible ? 'zalo-floater-roaming' : 'zalo-floater-docked'}`}>
-          <a
+          <button
+            type="button"
             className="zalo-floater-link"
-            href={ZALO_PROFILE_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Mở Zalo để kết bạn và trò chuyện"
+            onClick={() => setQrOpen(true)}
+            aria-label="Mở bảng kết bạn Zalo"
             title="Kết bạn Zalo"
           >
             <SiZalo size={36} aria-hidden="true" />
-          </a>
-          <button
-            type="button"
-            className="zalo-floater-qr"
-            onClick={() => setQrOpen(true)}
-            aria-label="Xem mã QR Zalo để kết bạn"
-            title="Quét mã QR Zalo"
-          >
-            <QrCode size={17} aria-hidden="true" />
+            <span className="zalo-floater-qr" aria-hidden="true">
+              <QrCode size={17} />
+            </span>
           </button>
           {!visible && (
             <button
