@@ -19,7 +19,7 @@ import {
 } from "@workspace/api-zod";
 
 const router: IRouter = Router();
-const COURSE_PRICE = 875_000;
+const COURSE_PRICE = 1_200_000;
 const GOOGLE_SHEET_ID = "1VOAe38EmkujtBeN60MDDglawb7GV9Y6_NN4ytvd-2kg";
 
 async function appendRegistrationToSheet(
