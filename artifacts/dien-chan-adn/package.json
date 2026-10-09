@@ -75,6 +75,6 @@
   "dependencies": {
     "@clerk/react": "^6.14.7",
     "@clerk/themes": "^2.4.57",
-    "@workspace/api-client-react": "file:./lib/api-client-react"
+    "@workspace/api-client-react": "workspace:*"
   }
 }
